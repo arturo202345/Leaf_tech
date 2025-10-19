@@ -5,282 +5,364 @@
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Lato', Arial, sans-serif;
     background-color: #8fa895;
     margin: 0;
 }
 
-/* Header */
-header {
-    background-color: #7cb342;
-    padding: 12px 50px;
+/* Contenedor principal */
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #8fa895;
 }
 
-nav {
+/* Header con navegación */
+.header-nav {
+    background-color: rgba(100.55, 138.31, 91.11, 0.75);
     display: flex;
     align-items: center;
+    padding: 15px 50px;
     gap: 30px;
 }
 
-.logo {
+.logo-box {
     width: 60px;
     height: 50px;
-    background-color: #c4ff9e;
-    margin-right: 20px;
+    background-color: #AEFF94;
+    flex-shrink: 0;
 }
 
-nav a {
+.nav-links {
+    display: flex;
+    gap: 30px;
+    flex: 1;
+}
+
+.nav-link {
     color: #000000;
     text-decoration: none;
     font-size: 18px;
     font-weight: 400;
+    transition: color 0.3s;
 }
 
-.search-icon {
-    background-color: #2d2d2d;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: auto;
-    width: 35px;
-    height: 35px;
-    border-radius: 4px;
+.nav-link:hover {
+    color: #ffffff;
+}
+
+.header-right {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 15px;
 }
 
-.start-btn {
-    background-color: #c4ff9e;
-    color: #000000;
+.start-button {
+    background-color: #AEFF94;
+    color: #020000;
     border: none;
-    padding: 8px 30px;
-    border-radius: 6px;
+    padding: 10px 25px;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 18px;
     font-weight: 400;
+    transition: background-color 0.3s;
 }
 
-/* Main Container */
-.main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0;
+.start-button:hover {
+    background-color: #9ee87e;
 }
 
-/* Content Wrapper */
-.content-wrapper {
+.search-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #2d2d2d;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
     display: flex;
-    gap: 0;
-    margin-bottom: 0;
-    background-color: #8fa895;
     align-items: center;
     justify-content: center;
+    border-radius: 4px;
 }
 
-/* Left Panel */
-.left-panel {
-    flex: 1;
-    background-color: #8fa895;
-    padding: 30px;
+/* Título principal */
+.main-title {
+    text-align: center;
+    color: white;
+    font-size: 36px;
+    font-weight: 300;
+    padding: 40px 0;
+}
+
+/* Sección de riego */
+.riego-container {
+    background-color: #262424;
+    border: 1px solid black;
+    border-radius: 4px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    padding: 40px;
     display: flex;
-    flex-direction: column;
+    gap: 50px;
     align-items: center;
 }
 
-.plant-title {
-    color: white;
-    font-size: 32px;
-    margin-bottom: 25px;
-    font-weight: 300;
-    text-align: center;
-    width: 100%;
-}
-
-.video {
-    background-color: white;
-    border-radius: 0;
-    width: 100%;
-    max-width: 320px;
+.plant-image {
+    width: 300px;
     height: 300px;
-    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.video img {
+.plant-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 4px;
 }
 
-/* Right Panel */
-.right-panel {
+.riego-info {
     flex: 1;
-    background-color: #8fa895;
-    padding: 30px 30px 30px 50px;
     display: flex;
     flex-direction: column;
-    position: relative;
-    align-items: center;
+    gap: 20px;
 }
 
-.panel-title {
+.plant-name {
     color: white;
     font-size: 24px;
-    margin-bottom: 25px;
-    font-weight: 300;
+    font-weight: 400;
     text-align: center;
-    width: 100%;
+    margin-bottom: 10px;
 }
 
-.parameter {
+.section-title {
+    color: white;
+    font-size: 28px;
+    font-weight: 300;
+    text-align: center;
     margin-bottom: 20px;
+}
+
+.params-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.param-row {
     display: flex;
     align-items: center;
     gap: 15px;
     justify-content: center;
-    width: 100%;
-    max-width: 450px;
 }
 
-.parameter label {
-    color: #000000;
+.param-label {
+    background-color: #AEFF94;
+    color: #0C0000;
     font-size: 16px;
-    background-color: #c4ff9e;
-    padding: 8px 20px;
-    border-radius: 4px;
-    min-width: 140px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
     font-weight: 400;
-}
-
-.icon {
-    font-size: 18px;
-}
-
-.param-value {
-    background-color: white;
-    padding: 8px 20px;
+    padding: 12px 25px;
     border-radius: 4px;
-    font-size: 16px;
-    min-width: 80px;
+    min-width: 180px;
     text-align: center;
-    color: #000000;
 }
 
-.info-btn {
-    background-color: #4eb8ff;
-    color: white;
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
+.param-box {
+    background-color: white;
+    color: #0C0000;
     font-size: 16px;
+    font-weight: 400;
+    padding: 12px 20px;
+    border-radius: 4px;
+    min-width: 100px;
+    text-align: center;
+}
+
+.icon-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
 }
 
-.more-btn {
-    position: absolute;
-    bottom: 30px;
-    right: 40px;
-    background: none;
-    border: none;
-    cursor: pointer;
+/* Título de la especie */
+.species-title {
+    text-align: center;
+    color: white;
+    font-size: 36px;
+    font-weight: 300;
+    padding: 40px 0;
+}
+
+/* Sección de información de la especie */
+.species-container {
+    background-color: #262424;
+    border: 1px solid black;
+    border-radius: 4px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    padding: 40px;
+    display: flex;
+    gap: 40px;
+}
+
+.species-image {
+    width: 350px;
+    height: 350px;
+    flex-shrink: 0;
+}
+
+.species-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.species-info {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: 20px;
+}
+
+.species-name {
     color: white;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 10px;
 }
 
-.more-btn-text {
-    font-size: 24px;
-    font-weight: 300;
-}
-
-.arrow {
+.species-text {
     color: white;
-    font-size: 40px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    text-align: justify;
+    flex: 1;
 }
 
-/* Info Section */
-.info-section {
-    background-color: white;
-    padding: 40px;
+.species-reference {
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-top: auto;
 }
 
-.info-section h2 {
-    color: #000000;
-    font-size: 32px;
-    font-weight: 300;
-    text-align: center;
-    margin-bottom: 40px;
+/* Footer */
+.footer-section {
+    background-color: #262424;
+    border-top: 3px solid rgba(100.55, 138.31, 91.11, 0.75);
+    padding: 50px 0;
+    margin-top: 50px;
 }
 
-.info-content {
-    display: flex;
-    gap: 30px;
-    max-width: 900px;
+.footer-content {
+    max-width: 1200px;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 0 40px;
 }
 
-.info-content img {
-    width: 280px;
-    height: 320px;
-    border-radius: 0;
-    object-fit: cover;
+.footer-text {
+    color: #FFF2F2;
+    font-size: 18px;
+    font-weight: 400;
+    max-width: 400px;
+}
+
+.footer-image {
+    width: 400px;
+    height: 200px;
     flex-shrink: 0;
 }
 
-.info-text {
-    flex: 1;
-    background-color: #3d3d3d;
-    padding: 25px;
-    border-radius: 0;
+.footer-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
-.info-text h3 {
-    color: white;
-    font-size: 22px;
-    font-weight: 400;
-    margin-bottom: 15px;
+.subscribe-button {
+    background-color: #AEFF94;
+    color: #020000;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    flex-shrink: 0;
 }
 
-.info-text p {
-    color: white;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 15px;
+.subscribe-button:hover {
+    background-color: #9ee87e;
 }
 
-.reference {
-    font-size: 12px;
-    opacity: 0.9;
+/* Responsive */
+@media (max-width: 1024px) {
+    .riego-container,
+    .species-container {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .plant-image,
+    .species-image {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-image {
+        width: 100%;
+        max-width: 500px;
+    }
 }
 
 @media (max-width: 768px) {
-    .content-wrapper {
-        flex-direction: column;
+    .header-nav {
+        padding: 15px 20px;
+        flex-wrap: wrap;
     }
-    
-    .info-content {
-        flex-direction: column;
+
+    .nav-links {
+        gap: 15px;
     }
-    
-    .info-content img {
-        width: 100%;
+
+    .nav-link {
+        font-size: 14px;
     }
-    
-    .more-btn {
-        position: static;
-        margin-top: 20px;
+
+    .main-title,
+    .species-title {
+        font-size: 28px;
+        padding: 30px 20px;
+    }
+
+    .riego-container,
+    .species-container {
+        margin: 0 20px 40px;
+        padding: 20px;
+    }
+
+    .footer-content {
+        padding: 0 20px;
     }
 }

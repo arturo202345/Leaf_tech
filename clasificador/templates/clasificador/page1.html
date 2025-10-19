@@ -1,73 +1,73 @@
-{% extends "clasificador/encabezado.html" %}
+{% extends 'clasificador/encabezado.html' %}
 {% load static %}
-
-
 {% block content %}
 <title>Monitoreo de plantas</title>
-<div class="main-container">
-    <div class="content-wrapper">
-        <div class="left-panel">
-            <div class="plant-title">Epipremnum aureum</div>
-            <div class="video">
-                <img src="{% url 'video_feed' %}" alt="Video feed">
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Care Plant</title>
+    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+</head>
+<div class="page-container">
+    <!-- Header con navegación -->
+
+    <!-- Título principal -->
+    <div class="main-title">Monitoreo de plantas</div>
+
+    <!-- Sección de parámetros de riego -->
+    <section class="riego-container">
+        <div class="plant-image">
+            <img src="{% url 'video_feed' %}" alt="Epipremnum aureum">
         </div>
-
-        <div class="right-panel">
-            <div class="panel-title">Parametros Ambientales</div>
-            
-            <div class="parameter">
-                <label>
-                    Temperatura 🌡️
-                </label>
-                <span class="param-value">25 C</span>
-                <button class="info-btn">i</button>
-            </div>
-
-            <div class="parameter">
-                <label>
-                    Humedad 💧
-                </label>
-                <span class="param-value">20%</span>
-            </div>
-
-            <div class="parameter">
-                <label>
-                    Ph Suelo 🌱
-                </label>
-                <span class="param-value">7 PH</span>
-            </div>
-
-            <div class="parameter">
-                <label>
-                    Iluminacion 💡
-                </label>
-                <span class="param-value">30%</span>
-            </div>
-
-            <button class="more-btn">
-                <span class="more-btn-text">Más</span>
-                <span class="arrow">▶</span>
-            </button>
-        </div>
-    </div>
-
-    <div class="info-section">
-        <h2>Un poco sobre la especie</h2>
         
-        <div class="info-content">
-            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop" alt="Epipremnum aureum">
+        <div class="riego-info">
+            <div class="plant-name">Epipremnum aureum</div>
+            <div class="section-title">Parametros de Riego</div>
             
-            <div class="info-text">
-                <h3>Epipremnum aureum</h3>
-                <p>
-                    Epipremnum aureum, comúnmente conocido como potus, pothos o poto (antiguamente clasificado dentro del género Pothos y, por esto, conocido habitualmente bajo este nombre) es una especie de la familia Araceae nativa del sudeste asiático (Malasia, Indonesia) y Nueva Guinea. En ocasiones es confundida con philodendron en las floristerías.
-                </p>
-                <p class="reference">
-                    Informamación basada en: https://es.wikipedia.org/wiki/Epipremnum_aureum
-                </p>
+            <div class="params-grid">
+                <div class="param-row">
+                    <div class="param-label">Intervalo de riego</div>
+                    <div class="param-box">12 /h</div>
+                    <div class="icon-btn">⏱️</div>
+                </div>
+                
+                <div class="param-row">
+                    <div class="param-label">Duracion de riego</div>
+                    <div class="param-box">30 /s</div>
+                    <div class="icon-btn">⏱️</div>
+                </div>
+                
+                <div class="param-row">
+                    <div class="param-label">Cantidad de agua</div>
+                    <div class="param-box">100 ml/s.</div>
+                    <div class="icon-btn">💧</div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Título de la especie -->
+    <div class="species-title">Un poco sobre la especie</div>
+
+    <!-- Sección de información de la especie -->
+    <section class="species-container">
+        <div class="species-image">
+            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop" alt="Epipremnum aureum">
+        </div>
+        
+        <div class="species-info">
+            <div class="species-name">Epipremnum aureum</div>
+            <div class="species-text">
+                Epipremnum aureum, comúnmente conocido como potus, pothos o poto (antiguamente clasificado dentro del género Pothos y, por esto, conocido habitualmente bajo este nombre) es una especie de la familia Araceae nativa del sudeste asiático (Malasia, Indonesia) y Nueva Guinea. En ocasiones es confundida con philodendron en las floristerías.
+            </div>
+            <div class="species-reference">
+                Informamación basada en: https://es.wikipedia.org/wiki/Epipremnum_aureum
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+   
 </div>
 {% endblock content %}
+

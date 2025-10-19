@@ -11,15 +11,17 @@
 </head>
 <body>
     {% block header %}
-    <header>
-        <nav>
-            <div class="logo"></div>
-            <a href="{% url 'index' %}">Home</a>
-            <a href="#">About</a>
-            <a href="{% url 'page1' %}">Monitoreo</a>
-            <button class="search-icon">🔍</button>
-            <button class="start-btn">Empezar</button>
+     <header class="header-nav">
+        <div class="logo-box"></div>
+        <nav class="nav-links">
+            <a href="{% url 'index' %}" class="nav-link">Home</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="{% url 'page1' %}" class="nav-link">Monitoreo</a>
         </nav>
+        <div class="header-right">
+            <button class="start-button">Empezar</button>
+            <div class="search-icon">🔍</div>
+        </div>
     </header>
     {% endblock header %}
 
