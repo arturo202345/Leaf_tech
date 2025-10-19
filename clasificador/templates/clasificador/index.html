@@ -1,72 +1,81 @@
+{% extends "clasificador/encabezado.html" %}
+{% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Clasificador de Plantas</title>
-    <style>
-        body {
-            background: #f0f4f0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
-            gap: 40px;
-        }
-
-        .info {
-            flex: 1;
-            text-align: left;
-        }
-
-        .info h1 {
-            color: #2e7d32;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .info p {
-            color: #555;
-            font-size: 1rem;
-        }
-
-        .video {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        .video img {
-            border: 4px solid #4caf50;
-            border-radius: 12px;
-            width: 70%;
-            max-width: 450px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Care Plant</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <div class="container">
-        <div class="info">
-            <h1>🌿 Clasificador de Plantas</h1>
-            <p>
-                Visualiza en tiempo real la cámara del sistema de reconocimiento.<br>
-                El modelo analiza la imagen y clasifica automáticamente la especie detectada.
+    <!-- Header -->
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Auto Care Plant</h1>
+            <p class="hero-description">
+                Nuestro proyecto surge de la necesidad de facilitar el monitoreo constante de los cultivos en ambientes 
+                controlados. A través de la recopilación de datos en tiempo real sobre las condiciones del entorno de las 
+                plantas, AutoCarePlant ayuda a los agricultores y entusiastas de la jardinería a tomar decisiones informadas 
+                y optimizar el crecimiento de sus cultivos.
             </p>
+            <div class="hero-images">
+                <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=300&h=200&fit=crop" alt="Cultivo 1">
+                <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=300&h=200&fit=crop" alt="Cultivo 2">
+                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=200&fit=crop" alt="Cultivo 3">
+            </div>
         </div>
-        <div class="video">
-            <img src="{% url 'video_feed' %}" alt="Video en vivo">
+    </section>
+
+    <!-- Objetivos Section -->
+    <section class="objetivos-section">
+        <div class="objetivos-container">
+            <h2 class="objetivos-title">Objetivos del<br>sistema</h2>
+            <div class="objetivos-box">
+                <ul class="objetivos-list">
+                    <li>Detección temprana de estrés hídrico</li>
+                    <li>Detección de plagas comunes</li>
+                    <li>Monitoreo de condiciones ambientales</li>
+                    <li>Ajuste fino de la producción</li>
+                    <li>Asesoramiento personalizado según estado fenológico de la planta</li>
+                    <li>Protección enfermedades y plagas</li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Porque Preferimos Section -->
+    <section class="porque-section">
+        <div class="porque-container">
+            <div class="porque-left">
+                <h2 class="porque-title">Porque preferimos?</h2>
+                <p class="porque-subtitle">Nuestro proyecto se destaca del resto debido a nuestro enfoque.</p>
+                
+                <div class="beneficios-list">
+                    <div class="beneficio-item">
+                        <div class="beneficio-icon">🌱</div>
+                        <span>Execelente Servicio</span>
+                    </div>
+                    <div class="beneficio-item">
+                        <div class="beneficio-icon">🌍</div>
+                        <span>Cuidado Amigable</span>
+                    </div>
+                    <div class="beneficio-item">
+                        <div class="beneficio-icon">💼</div>
+                        <span>Trabajo Limpio</span>
+                    </div>
+                </div>
+
+                <button class="plan-btn">Elige Tu Plan</button>
+            </div>
+            <div class="porque-right">
+                <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=500&h=400&fit=crop" alt="Plantas">
+            </div>
+        </div>
+    </section>
 </body>
 </html>
+{% endblock content %}

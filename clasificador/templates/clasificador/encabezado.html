@@ -1,0 +1,31 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Monitoreo de plantas{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+    <header>
+        <nav>
+            <div class="logo"></div>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="#">About</a>
+            <a href="{% url 'page1' %}">Monitoreo</a>
+            <button class="search-icon">🔍</button>
+            <button class="start-btn">Empezar</button>
+        </nav>
+    </header>
+    {% endblock header %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

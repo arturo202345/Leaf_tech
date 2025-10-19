@@ -40,3 +40,6 @@ def video_feed(request):
 
 def index(request):
     return render(request, 'clasificador/index.html')
+
+def page_1 (request):
+    return render(request, 'clasificador/page1.html')

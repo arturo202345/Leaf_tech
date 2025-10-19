@@ -1,0 +1,276 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #8BC34A;
+    padding: 10px 40px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+}
+
+.start-btn {
+    background-color: #689F38;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.start-btn:hover {
+    background-color: #558B2F;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=1600&h=600&fit=crop');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 40px 40px;
+    position: relative;
+    min-height: 500px;
+}
+
+.hero-overlay {
+    max-width: 800px;
+    margin-bottom: 40px;
+}
+
+.hero-title {
+    color: white;
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.hero-description {
+    color: white;
+    font-size: 14px;
+    line-height: 1.8;
+    max-width: 700px;
+}
+
+.hero-images {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.hero-img {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Objetivos Section */
+.objetivos {
+    background-color: #C5E1A5;
+    padding: 60px 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+.objetivos-title {
+    font-size: 32px;
+    color: #333;
+    font-weight: 400;
+    min-width: 200px;
+    line-height: 1.4;
+}
+
+.objetivos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.objetivo-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.objetivo-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.objetivo-item p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Porque Section */
+.porque {
+    background-color: #3E3E3E;
+    padding: 60px 40px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    position: relative;
+    clip-path: polygon(0 0, 100% 15%, 100% 100%, 0 100%);
+    padding-top: 120px;
+}
+
+.porque-content {
+    flex: 1;
+    max-width: 500px;
+}
+
+.porque-title {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.porque-subtitle {
+    color: #B0B0B0;
+    font-size: 14px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.beneficios {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.beneficio {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.beneficio-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #5A5A5A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.beneficio p {
+    color: white;
+    font-size: 16px;
+}
+
+.plan-btn {
+    background-color: #689F38;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.plan-btn:hover {
+    background-color: #558B2F;
+}
+
+.porque-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.plantas-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .hero-images {
+        flex-wrap: wrap;
+    }
+
+    .hero-img {
+        width: 150px;
+        height: 120px;
+    }
+
+    .objetivos {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .porque {
+        flex-direction: column;
+        clip-path: none;
+        padding-top: 60px;
+    }
+}
