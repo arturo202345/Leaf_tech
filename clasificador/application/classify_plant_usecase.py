@@ -6,6 +6,6 @@ class ClassifyPlantUseCase:
 
     def execute(self, image):
         label, prob = self.classifier_service.classify(image)
-        if prob < 0.7:
+        if prob < 0.3:
             return {"label": "No está en los datos", "prob": prob}
         return {"label": label, "prob": prob}
