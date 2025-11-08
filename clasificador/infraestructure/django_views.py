@@ -1,6 +1,7 @@
 from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 import cv2
+import numpy as np
 from clasificador.application.classify_plant_usecase import ClassifyPlantUseCase
 from clasificador.infraestructure.tf_classifier import TensorflowPlantClassifier
 from clasificador.domain.color_analizer import ColorAnalyzer
@@ -22,11 +23,10 @@ last_color_analysis = {
     'descripcion': 'Analizando...'
 }
 
-
 def generate_video():
     """Genera el stream de video con detección y análisis en tiempo real"""
     global last_result, last_color_analysis
-    cap = cv2.VideoCapture("http://192.168.100.99:8080/video")
+    cap = cv2.VideoCapture("http://192.168.100.99:8080/video", cv2.CAP_FFMPEG)
     frame_count = 0
 
     while True:
@@ -34,39 +34,85 @@ def generate_video():
         if not ret:
             break
 
+        # Redimensionar frame para mejor rendimiento
+        frame = cv2.resize(frame, (640, 480))
+
         # Detección de objetos verdes (plantas)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv, (25, 40, 40), (95, 255, 255))
+
+        # Rango de verde más natural
+        lower_green = (40, 40, 40)
+        upper_green = (80, 255, 255)
+        mask = cv2.inRange(hsv, lower_green, upper_green)
+
+        # Limpieza de ruido
+        kernel = np.ones((5, 5), np.uint8)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+        mask = cv2.GaussianBlur(mask, (5, 5), 0)
+
+        # Buscar contornos (posibles hojas)
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        if contours:
-            c = max(contours, key=cv2.contourArea)
+        for c in contours:
+            area = cv2.contourArea(c)
+
+            # Filtro por área
+            if not (8000 < area < 150000):
+                continue
+
+            # Filtro por circularidad
+            perimeter = cv2.arcLength(c, True)
+            if perimeter == 0:
+                continue
+            circularity = 4 * np.pi * (area / (perimeter * perimeter))
+            if circularity < 0.2 or circularity > 0.9:
+                continue
+
+            # Filtro por aspect ratio
             x, y, w, h = cv2.boundingRect(c)
+            aspect_ratio = w / float(h)
+            if not (0.5 < aspect_ratio < 2.0):
+                continue
 
-            if w * h > 5000:
-                crop = frame[y:y + h, x:x + w]
+            # Validación de color verde
+            mean_hsv = cv2.mean(hsv[y:y + h, x:x + w])
+            if not (35 <= mean_hsv[0] <= 85 and mean_hsv[1] > 40 and mean_hsv[2] > 50):
+                continue
 
-                # Clasificación de planta
-                result = usecase.execute(crop)
-                last_result = result
+            # Recortar región de interés
+            crop = frame[y:y + h, x:x + w]
 
-                # Análisis de color cada 10 frames
-                if frame_count % 10 == 0:
-                    porcentajes = color_analyzer.detectar_colores_frame(crop)
-                    if porcentajes:
-                        estado, descripcion = color_analyzer.evaluar_estado_salud(porcentajes)
-                        last_color_analysis = {
-                            'verde': porcentajes['verde'],
-                            'amarillo': porcentajes['amarillo'],
-                            'marron': porcentajes['marron'],
-                            'rojo': porcentajes['rojo'],
-                            'estado': estado,
-                            'descripcion': descripcion
-                        }
+            # Clasificación de planta
+            result = usecase.execute(crop)
+            last_result = result
 
-                # Dibujar recuadro de detección
-                color = (0, 255, 0) if result["label"] != "No está en los datos" else (0, 0, 255)
-                cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+            # Si no es una planta, ignorar y no dibujar nada
+            if result["label"] == "No está en los datos":
+                continue
+
+            # Análisis de color cada 10 frames
+            if frame_count % 10 == 0:
+                porcentajes = color_analyzer.detectar_colores_frame(crop)
+                if porcentajes:
+                    estado, descripcion = color_analyzer.evaluar_estado_salud(porcentajes)
+                    last_color_analysis = {
+                        'verde': porcentajes['verde'],
+                        'amarillo': porcentajes['amarillo'],
+                        'marron': porcentajes['marron'],
+                        'rojo': porcentajes['rojo'],
+                        'estado': estado,
+                        'descripcion': descripcion
+                    }
+
+            # Color del contorno según la confianza
+            if result["prob"] < 0.85:
+                color = (0, 255, 255)  # amarillo = baja confianza
+            else:
+                color = (0, 255, 0)  # verde = alta confianza
+
+            # Dibujar solo el contorno con grosor aumentado
+            cv2.drawContours(frame, [c], -1, color, 4)
 
         frame_count += 1
 
@@ -75,8 +121,6 @@ def generate_video():
         if ret:
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
-
-
 def video_feed(request):
     """Vista para el streaming de video"""
     return StreamingHttpResponse(

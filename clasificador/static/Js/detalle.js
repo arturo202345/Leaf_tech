@@ -85,10 +85,6 @@ function confirmarEliminar() {
     }
 }
 
-function exportarDatos() {
-    alert('Función de exportación en desarrollo');
-}
-
 
 // mis plantas
 // Búsqueda de plantas

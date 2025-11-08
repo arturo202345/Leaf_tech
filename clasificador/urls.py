@@ -1,4 +1,4 @@
-from django.urls import path, include  # ← Agrega 'include' aquí
+from django.urls import path, include
 from clasificador.infraestructure import django_views as plant_views
 from clasificador.login import loginViews as auth_views
 from clasificador.plantas import plantasViews as plantas_views
@@ -11,15 +11,20 @@ urlpatterns = [
     path('get_last_result/', plant_views.get_last_result, name='get_last_result'),
     path('get_plant_data/', plant_views.get_plant_data, name='get_plant_data'),
     path('manual_usuario/', plantas_views.manual_usuario, name='manual_usuario'),
-    
+
+    # ✅ RUTA CORREGIDA - Faltaba 'name'
+    path('get-consejos-cuidado/', plantas_views.get_consejos_cuidado, name='get_consejos_cuidado'),
+
     # Rutas de gestión de plantas del usuario
     path('mis-plantas/', plantas_views.mis_plantas, name='mis_plantas'),
     path('editar-planta/<int:planta_id>/', plantas_views.editar_planta, name='editar_planta'),
     path('planta/<int:planta_id>/', plantas_views.detalle_planta, name='detalle_planta'),
     path('planta/<int:planta_id>/eliminar/', plantas_views.eliminar_planta, name='eliminar_planta'),
 
-    path('planta/monitoreo/<int:monitoreo_id>/nota/', plantas_views.guardar_nota_monitoreo, name='guardar_nota_monitoreo'),
-        # Guardar desde monitoreo en tiempo real
+    path('planta/monitoreo/<int:monitoreo_id>/nota/', plantas_views.guardar_nota_monitoreo,
+         name='guardar_nota_monitoreo'),
+
+    # Guardar desde monitoreo en tiempo real
     path('guardar-monitoreo/', plantas_views.guardar_planta_monitoreo, name='guardar_planta_monitoreo'),
 
     # Rutas de autenticación

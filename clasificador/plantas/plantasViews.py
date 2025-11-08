@@ -3,7 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count, Q
 from django.contrib import messages
-from clasificador.models import EspeciePlanta, MiPlanta, MonitoreoPlanta
+from django.views.decorators.http import require_http_methods
+
+from clasificador.models import EspeciePlanta, MiPlanta, MonitoreoPlanta, ConsejoCuidado
 
 
 @login_required
@@ -250,3 +252,81 @@ def editar_nota_monitoreo(request, monitoreo_id):
 def manual_usuario(request):
     """Vista del manual de usuario"""
     return render(request, 'clasificador/ManualU.html')
+
+
+@require_http_methods(["GET"])
+def get_consejos_cuidado(request):
+    """
+    Obtiene los consejos de cuidado para una planta específica
+    SOLO LECTURA - Los usuarios no pueden modificar
+    """
+    nombre_planta = request.GET.get('nombre_planta', '')
+
+    # Validar que hay una planta válida
+    if not nombre_planta or nombre_planta == "Detectando..." or nombre_planta == "no_planta":
+        return JsonResponse({
+            'success': False,
+            'message': 'No hay planta detectada'
+        })
+
+    try:
+        # Buscar la especie en el catálogo
+        especie = EspeciePlanta.objects.filter(
+            Q(nombre__iexact=nombre_planta) |
+            Q(nombre_cientifico__iexact=nombre_planta)
+        ).first()
+
+        if not especie:
+            return JsonResponse({
+                'success': False,
+                'message': f'La especie "{nombre_planta}" no está en el catálogo.'
+            })
+
+        # Intentar obtener los consejos
+        try:
+            consejo = especie.consejo
+
+            # Verificar que los consejos estén activos
+            if not consejo.activo:
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Los consejos para {especie.nombre} están temporalmente desactivados.'
+                })
+
+            # Retornar consejos completos
+            return JsonResponse({
+                'success': True,
+                'consejos': {
+                    'nombre_planta': especie.nombre,
+                    'nombre_cientifico': especie.nombre_cientifico or '',
+                    'luz': consejo.luz,
+                    'riego': consejo.riego,
+                    'temperatura': consejo.temperatura,
+                    'humedad': consejo.humedad,
+                    'suelo': consejo.suelo,
+                    'fertilizacion': consejo.fertilizacion,
+                    'poda': consejo.poda or '',
+                    'plagas_comunes': consejo.plagas_comunes or '',
+                    'toxicidad': consejo.get_toxicidad_display(),
+                    'toxicidad_svg': consejo.get_nivel_toxicidad_display_svg(),
+                    'dificultad': consejo.get_dificultad_display(),
+                    'dificultad_svg': consejo.get_dificultad_svg(),
+                    'notas_adicionales': consejo.notas_adicionales or ''
+                }
+            })
+
+        except ConsejoCuidado.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': f'Aún no hay consejos de cuidado disponibles para {especie.nombre}. '
+                           f'Nuestro equipo está trabajando en agregarlos pronto.'
+            })
+
+    except Exception as e:
+        # Log del error (opcional)
+        print(f"Error al obtener consejos: {str(e)}")
+
+        return JsonResponse({
+            'success': False,
+            'message': 'Ocurrió un error al cargar los consejos. Por favor, intenta de nuevo.'
+        }, status=500)

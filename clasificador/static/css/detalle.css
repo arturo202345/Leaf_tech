@@ -712,10 +712,6 @@
         gap: 10px;
     }
 
-    .btn-exportar {
-        width: 100%;
-    }
-
     .actions {
         width: 100%;
         justify-content: flex-start;

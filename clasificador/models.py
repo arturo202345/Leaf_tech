@@ -81,8 +81,6 @@ class MiPlanta(models.Model):
         verbose_name = "Mi Planta"
         verbose_name_plural = "Mis Plantas"
         ordering = ['-ultima_actualizacion']
-        # Un usuario solo puede tener UN ejemplar de cada especie
-        unique_together = [['usuario', 'especie']]
 
     def save(self, *args, **kwargs):
         # Actualizar contador en la especie
@@ -145,3 +143,134 @@ class MonitoreoPlanta(models.Model):
 
     def __str__(self):
         return f"Monitoreo de {self.planta} - {self.fecha_monitoreo.strftime('%d/%m/%Y %H:%M')}"
+
+
+class ConsejoCuidado(models.Model):
+    """
+    Consejos de cuidado de plantas - SOLO ADMINISTRADORES
+    Los usuarios solo pueden ver, no editar
+    """
+    # Relación con la especie (ONE-TO-ONE: un consejo por especie)
+    especie = models.OneToOneField(
+        'EspeciePlanta',
+        on_delete=models.CASCADE,
+        related_name='consejo',
+        help_text="Especie a la que pertenecen estos consejos"
+    )
+
+    # Consejos de cuidado
+    luz = models.TextField(
+        verbose_name="Luz",
+        help_text="Requerimientos de iluminación"
+    )
+
+    riego = models.TextField(
+        verbose_name="Riego",
+        help_text="Frecuencia y método de riego"
+    )
+
+    temperatura = models.CharField(
+        max_length=100,
+        verbose_name="Temperatura",
+        help_text="Rango de temperatura ideal"
+    )
+
+    humedad = models.CharField(
+        max_length=100,
+        verbose_name="Humedad",
+        help_text="Nivel de humedad requerido"
+    )
+
+    suelo = models.TextField(
+        verbose_name="Suelo",
+        help_text="Tipo de sustrato recomendado"
+    )
+
+    fertilizacion = models.TextField(
+        verbose_name="Fertilización",
+        help_text="Frecuencia y tipo de fertilizante"
+    )
+
+    poda = models.TextField(
+        verbose_name="Poda",
+        blank=True,
+        null=True,
+        help_text="Instrucciones de poda (opcional)"
+    )
+
+    plagas_comunes = models.TextField(
+        verbose_name="Plagas comunes",
+        blank=True,
+        null=True,
+        help_text="Plagas y enfermedades frecuentes (opcional)"
+    )
+
+    toxicidad = models.CharField(
+        max_length=50,
+        choices=[
+            ('no_toxica', 'No tóxica'),
+            ('toxica_leve', 'Levemente tóxica'),
+            ('toxica', 'Tóxica'),
+            ('muy_toxica', 'Muy tóxica')
+        ],
+        default='no_toxica',
+        help_text="Nivel de toxicidad para mascotas/humanos"
+    )
+
+    dificultad = models.CharField(
+        max_length=20,
+        choices=[
+            ('facil', 'Fácil'),
+            ('moderada', 'Moderada'),
+            ('dificil', 'Difícil')
+        ],
+        default='moderada',
+        help_text="Nivel de dificultad de cuidado"
+    )
+
+    notas_adicionales = models.TextField(
+        verbose_name="Notas adicionales",
+        blank=True,
+        null=True,
+        help_text="Información extra útil (opcional)"
+    )
+
+    # Control de visibilidad
+    activo = models.BooleanField(
+        default=True,
+        help_text="Desmarcar para ocultar estos consejos temporalmente"
+    )
+
+    # Metadata
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Consejo de Cuidado"
+        verbose_name_plural = "Consejos de Cuidado"
+        ordering = ['especie__nombre']
+        permissions = [
+            ("view_all_consejos", "Puede ver todos los consejos"),
+        ]
+
+    def __str__(self):
+        return f"Consejos: {self.especie.nombre}"
+
+    def get_nivel_toxicidad_display_svg(self):
+        """Retorna nombre de SVG según nivel de toxicidad"""
+        icons = {
+            'no_toxica': 'check',
+            'toxica_leve': 'alerta',
+            'toxica': 'alerta',
+            'muy_toxica': 'calavera'
+        }
+        return icons.get(self.toxicidad, 'alerta')
+
+    def get_dificultad_svg(self):
+        """Retorna nombre de SVG según dificultad"""
+        icons = {
+            'facil': 'sonrisa',
+            'moderada': 'pensativo',
+            'dificil': 'preocupado'
+        }
+        return icons.get(self.dificultad, 'pensativo')
