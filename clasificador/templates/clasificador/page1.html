@@ -1,99 +1,38 @@
 {% extends 'clasificador/encabezado.html' %}
 {% load static %}
 {% block content %}
-    <head>
-        <meta charset="UTF-8">
-        <title>Monitoreo de plantas</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'css/Page.css' %}">
-        <link rel="stylesheet" href="{% static 'css/modal.css'%}">
-        {% block extra_css %}{% endblock %}
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Monitoreo de plantas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/Page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css'%}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
 <div class="page-container">
 
-    <!-- Notificación -->
     <div id="notification" class="notification"></div>
 
-    <!-- Modal para agregar/actualizar ejemplar -->
-    <div id="modalAgregarPlanta" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">🌱 Guardar Planta</h2>
-                <span class="close">&times;</span>
-            </div>
-            
-            <form id="formAgregarPlanta">
-                <!-- Sección: Seleccionar ejemplar existente -->
-                <div id="seccionEjemplares" style="display: none;">
-                    <div class="info-box">
-                        💡 Ya tienes ejemplares de esta especie. Selecciona cuál actualizar o crea uno nuevo.
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Tus ejemplares actuales:</label>
-                        <div id="ejemplaresList" class="ejemplares-list"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="checkbox" id="crearNuevo" style="width: auto; margin-right: 8px;">
-                        <label for="crearNuevo" style="display: inline; font-weight: normal;">
-                            Crear nuevo ejemplar en lugar de actualizar
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Análisis de color actual -->
-                <div class="form-group">
-                    <label>Análisis de color actual</label>
-                    <div class="color-preview">
-                        <div class="color-preview-item">
-                            <span>🟢 Verde:</span>
-                            <strong id="previewVerde">0%</strong>
-                        </div>
-                        <div class="color-preview-item">
-                            <span>🟡 Amarillo:</span>
-                            <strong id="previewAmarillo">0%</strong>
-                        </div>
-                        <div class="color-preview-item">
-                            <span>🟤 Marrón:</span>
-                            <strong id="previewMarron">0%</strong>
-                        </div>
-                        <div class="color-preview-item">
-                            <span>🔴 Rojo:</span>
-                            <strong id="previewRojo">0%</strong>
-                        </div>
-                    </div>
-                    <div id="previewEstado" style="padding: 10px; background: #f0f0f0; border-radius: 5px; text-align: center; font-weight: 600;">
-                    </div>
-                </div>
-
-                <input type="hidden" id="plantaIdActualizar" name="planta_id">
-
-                <button type="submit" class="btn-submit" id="btnSubmit">
-                    💾 Guardar Planta
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Título principal -->
     <div class="main-title">Monitoreo de Plantas</div>
 
-    <!-- Sección de monitoreo -->
     <section class="riego-container">
         <div class="plant-image">
-            <!-- Video stream -->
-            <img id="videoStream" 
-                 src="{% url 'video_feed' %}" 
-                 alt="No camera" 
-                 data-placeholder="https://png.pngtree.com/png-vector/20221116/ourmid/pngtree-no-camera-red-sign-png-image_6459860.png">
 
-            <!-- Botón para controlar la cámara -->
+            <!-- VIDEO QUE USARÁ LA IMAGEN RECIBIDA POR WEBSOCKET -->
+            <img id="videoStream"
+                 alt="ArduinoLiveStream"
+                 style="width: 100%; height: auto; border-radius: 10px; background: #000;">
+
+            <!-- canvas opcional por si necesitas convertir base64 en imagen -->
+            <canvas id="hiddenCanvas" style="display:none;"></canvas>
+
             <button id="toggleCameraBtn" class="toggle-btn">Apagar cámara</button>
-            
-            <!-- Botón de consejos de cuidado (se muestra solo cuando hay planta válida) -->
-            <button id="verConsejosBtn" class="toggle-btn" style="margin-top: 10px; background: #10b981; display: none;">
+
+            <button id="verConsejosBtn"
+                    class="toggle-btn"
+                    style="margin-top: 10px; background: #10b981; display: none;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
                     <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                     <path d="M2 17l10 5 10-5"/>
@@ -101,13 +40,13 @@
                 </svg>
                 Consejos de Cuidado
             </button>
+
         </div>
-        
+
+        <!-- TODO EL RESTO SE MANTIENE IGUAL -->
         <div class="riego-info">
-            <!-- Nombre de la planta -->
             <div class="plant-name">Detectando...</div>
-            
-            <!-- Información taxonómica -->
+
             <div class="taxonomy-grid">
                 <div class="taxonomy-card label">Nombre científico</div>
                 <div class="taxonomy-card value" id="nombre-cientifico">-</div>
@@ -116,12 +55,10 @@
                 <div class="taxonomy-card value" id="familia">-</div>
             </div>
 
-            <!-- Botón principal de guardar -->
             <button id="guardarPlanta" class="btn-guardar">
                 💾 Guardar en Mi Colección
             </button>
 
-            <!-- Análisis de Color -->
             <div class="section-title">Análisis de Salud</div>
             <div class="color-analysis">
                 <div class="color-row">
@@ -145,22 +82,18 @@
                     <span id="color-rojo" class="color-percentage">0%</span>
                 </div>
             </div>
-            
-            <!-- Estado de la planta -->
-            <div id="estado-color" class="estado-badge">
-                Analizando...
-            </div>
+
+            <div id="estado-color" class="estado-badge">Analizando...</div>
         </div>
     </section>
 
-    <!-- Sección de información de la especie -->
     <section class="species-container">
         <div class="species-title">Información de la Especie</div>
 
         <div class="species-image">
             <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop" alt="Planta">
         </div>
-        
+
         <div class="species-info">
             <div class="species-name">Detectando...</div>
             <div class="species-text">
@@ -172,25 +105,16 @@
         </div>
     </section>
 
-    <!-- CSRF Token para Django -->
     {% csrf_token %}
-
-    <!-- ============================================ -->
-    <!-- INCLUIR MODAL DE CONSEJOS (archivo separado) -->
-    <!-- ============================================ -->
-    {% include 'planta/consejos-cuidado-modal.html' %}
-
 </div>
 
-<!-- Script de configuración de URLs (necesario para el archivo JS externo) -->
+<!-- URLs disponibles para el JS -->
 <script>
-    // Definir URLs globales para que el archivo JS externo pueda usarlas
     window.GET_PLANT_DATA_URL = "{% url 'get_plant_data' %}";
     window.GUARDAR_PLANTA_URL = "{% url 'guardar_planta_monitoreo' %}";
-    window.VIDEO_FEED_URL = "{% url 'video_feed' %}";
+    window.WS_VIDEO_URL = "wss://leaf-tech.onrender.com/ws/video/";
 </script>
 
-<!-- Incluir el archivo JavaScript externo -->
 <script src="{% static 'Js/page.js' %}"></script>
 
 </body>
