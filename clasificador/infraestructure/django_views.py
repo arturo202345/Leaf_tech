@@ -26,7 +26,7 @@ last_color_analysis = {
 def generate_video():
     """Genera el stream de video con detección y análisis en tiempo real"""
     global last_result, last_color_analysis
-    cap = cv2.VideoCapture("http://192.168.100.99:8080/video", cv2.CAP_FFMPEG)
+    cap = cv2.VideoCapture(0)
     frame_count = 0
 
     while True:

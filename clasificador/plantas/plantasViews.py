@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count, Q
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
+import requests
+from django.views.decorators.csrf import csrf_exempt
+
 
 from clasificador.models import EspeciePlanta, MiPlanta, MonitoreoPlanta, ConsejoCuidado
 
@@ -330,3 +333,67 @@ def get_consejos_cuidado(request):
             'success': False,
             'message': 'Ocurrió un error al cargar los consejos. Por favor, intenta de nuevo.'
         }, status=500)
+    
+
+ASSEMBLYAI_API_KEY = "90064a041b134dd7ba5f7c704d4080bf"
+
+@csrf_exempt
+@login_required
+def transcribir_audio_nota(request, monitoreo_id):
+    """
+    Recibe un archivo de audio grabado desde el navegador,
+    lo envía a AssemblyAI y guarda la transcripción como nota del monitoreo.
+    """
+    if request.method != 'POST' or 'audio' not in request.FILES:
+        return JsonResponse({'error': 'No se envió archivo de audio'}, status=400)
+
+    # Verificar monitoreo del usuario
+    monitoreo = get_object_or_404(
+        MonitoreoPlanta.objects.select_related('planta__usuario'),
+        id=monitoreo_id,
+        planta__usuario=request.user
+    )
+
+    audio_file = request.FILES['audio']
+
+    # Subir a AssemblyAI
+    headers = {'authorization': ASSEMBLYAI_API_KEY}
+
+    upload_response = requests.post(
+        'https://api.assemblyai.com/v2/upload',
+        headers=headers,
+        data=audio_file.read()
+    )
+
+    if upload_response.status_code != 200:
+        return JsonResponse({'error': 'Error al subir audio'}, status=upload_response.status_code)
+
+    audio_url = upload_response.json().get('upload_url')
+
+    # Crear la transcripción
+    json_data = {"audio_url": audio_url, "language_code": "es"}
+    transcript_response = requests.post(
+        'https://api.assemblyai.com/v2/transcript',
+        headers=headers,
+        json=json_data
+    )
+
+    if transcript_response.status_code != 200:
+        return JsonResponse({'error': 'Error al crear transcripción'}, status=transcript_response.status_code)
+
+    transcript_id = transcript_response.json()['id']
+
+    # Esperar a que termine la transcripción (consulta polling)
+    status = "processing"
+    while status not in ["completed", "error"]:
+        poll = requests.get(f'https://api.assemblyai.com/v2/transcript/{transcript_id}', headers=headers)
+        status = poll.json()['status']
+        if status == "completed":
+            text = poll.json()['text']
+            monitoreo.notas = text
+            monitoreo.save(update_fields=['notas'])
+            return JsonResponse({'success': True, 'texto': text})
+        elif status == "error":
+            return JsonResponse({'error': 'Error en transcripción'}, status=500)
+
+    return JsonResponse({'error': 'Transcripción no completada'}, status=500)

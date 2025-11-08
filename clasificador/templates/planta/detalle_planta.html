@@ -238,33 +238,24 @@
 
 <!-- Modal para Notas -->
 <div id="modalNotas" class="modal">
-    <div class="modal-content modal-notas">
-        <div class="modal-header">
-            <h2>📝 <span id="modalTitulo">Agregar Nota</span></h2>
-            <span class="close" onclick="cerrarModalNotas()">&times;</span>
-        </div>
-        <form id="formNotas" method="POST" action="">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="notasTexto">Escribe tus observaciones:</label>
-                <textarea 
-                    id="notasTexto" 
-                    name="notas" 
-                    rows="6" 
-                    placeholder="Ej: Observé hojas nuevas en la parte superior. Apliqué fertilizante líquido diluido. La planta está respondiendo bien al cambio de ubicación..."
-                    required
-                ></textarea>
-                <div class="contador-caracteres">
-                    <span id="contadorCaracteres">0</span> / 500 caracteres
-                </div>
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn-cancelar" onclick="cerrarModalNotas()">Cancelar</button>
-                <button type="submit" class="btn-guardar">💾 Guardar Nota</button>
-            </div>
-        </form>
+  <div class="modal-content modal-notas">
+    <div class="modal-header">
+      <h2>🎤 <span id="modalTitulo">Grabar Nota de Voz</span></h2>
+      <span class="close" onclick="cerrarModalNotas()">&times;</span>
     </div>
+
+    <div class="form-group">
+      <p>Presiona para grabar tu nota de voz:</p>
+      <button id="btnGrabar" class="btn-guardar">🎙️ Grabar</button>
+      <button id="btnDetener" class="btn-cancelar" disabled>⏹️ Detener</button>
+
+      <div id="grabacionEstado" style="margin-top:10px;color:#444;"></div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancelar" onclick="cerrarModalNotas()">Cerrar</button>
+    </div>
+  </div>
 </div>
     
 

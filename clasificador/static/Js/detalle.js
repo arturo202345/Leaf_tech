@@ -1,103 +1,66 @@
+let mediaRecorder;
+let audioChunks = [];
 let monitoreoActualId = null;
 
-function abrirModalNotas(monitoreoId, notasActuales) {
+function abrirModalNotas(monitoreoId) {
     monitoreoActualId = monitoreoId;
-    const modal = document.getElementById('modalNotas');
-    const textarea = document.getElementById('notasTexto');
-    const titulo = document.getElementById('modalTitulo');
-    const form = document.getElementById('formNotas');
-
-    // Configurar título y acción del formulario
-    if (notasActuales && notasActuales !== 'None') {
-        titulo.textContent = 'Editar Nota';
-        textarea.value = notasActuales;
-    } else {
-        titulo.textContent = 'Agregar Nota';
-        textarea.value = '';
-    }
-
-    // Actualizar contador de caracteres
-    actualizarContador();
-
-    // Configurar URL del formulario
-    form.action = `/planta/monitoreo/${monitoreoId}/nota/`;
-
-    modal.style.display = 'block';
-    textarea.focus();
+    document.getElementById('modalNotas').style.display = 'block';
 }
 
 function cerrarModalNotas() {
-    const modal = document.getElementById('modalNotas');
-    modal.style.display = 'none';
-    monitoreoActualId = null;
+    document.getElementById('modalNotas').style.display = 'none';
 }
 
-function actualizarContador() {
-    const textarea = document.getElementById('notasTexto');
-    const contador = document.getElementById('contadorCaracteres');
-    const longitud = textarea.value.length;
-    contador.textContent = longitud;
+const btnGrabar = document.getElementById('btnGrabar');
+const btnDetener = document.getElementById('btnDetener');
+const grabacionEstado = document.getElementById('grabacionEstado');
 
-    // Cambiar color si se acerca al límite
-    if (longitud > 450) {
-        contador.style.color = '#e74c3c';
-    } else if (longitud > 400) {
-        contador.style.color = '#f39c12';
-    } else {
-        contador.style.color = '#95a5a6';
+btnGrabar.addEventListener('click', async () => {
+    if (!navigator.mediaDevices) {
+        alert("Tu navegador no soporta grabación de audio");
+        return;
     }
-}
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    const textarea = document.getElementById('notasTexto');
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
 
-    // Contador de caracteres
-    textarea.addEventListener('input', actualizarContador);
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = async () => {
+            grabacionEstado.textContent = "Procesando audio...";
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('audio', audioBlob);
 
-    // Límite de caracteres
-    textarea.addEventListener('input', function() {
-        if (this.value.length > 500) {
-            this.value = this.value.substring(0, 500);
-            actualizarContador();
-        }
-    });
+            const response = await fetch(`/monitoreo/${monitoreoActualId}/transcribir_audio/`, {
+                method: 'POST',
+                body: formData
+            });
 
-    // Cerrar modal al hacer clic fuera
-    window.addEventListener('click', function(event) {
-        const modal = document.getElementById('modalNotas');
-        if (event.target === modal) {
-            cerrarModalNotas();
-        }
-    });
+            const data = await response.json();
+            if (data.success) {
+                grabacionEstado.textContent = "✅ Nota guardada: " + data.texto;
+            } else {
+                grabacionEstado.textContent = "❌ Error: " + (data.error || 'Transcripción fallida');
+            }
+        };
 
-    // Cerrar modal con Escape
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            cerrarModalNotas();
-        }
-    });
+        mediaRecorder.start();
+        grabacionEstado.textContent = "🎙️ Grabando...";
+        btnGrabar.disabled = true;
+        btnDetener.disabled = false;
+    } catch (error) {
+        console.error(error);
+        alert("Error al iniciar grabación");
+    }
 });
 
-function confirmarEliminar() {
-    if (confirm('¿Estás seguro de que deseas eliminar este ejemplar? Esta acción no se puede deshacer.')) {
-        window.location.href = "{% url 'eliminar_planta' planta.id %}";
+btnDetener.addEventListener('click', () => {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+        grabacionEstado.textContent = "⏹️ Grabación detenida. Subiendo...";
+        btnGrabar.disabled = false;
+        btnDetener.disabled = true;
     }
-}
-
-
-// mis plantas
-// Búsqueda de plantas
-document.getElementById('searchInput').addEventListener('keyup', function() {
-    const searchValue = this.value.toLowerCase();
-    const plantCards = document.querySelectorAll('.plant-card');
-
-    plantCards.forEach(card => {
-        const plantName = card.getAttribute('data-name');
-        if (plantName.includes(searchValue)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
 });

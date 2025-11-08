@@ -31,4 +31,6 @@ urlpatterns = [
     path('signup/', auth_views.signup, name='signup'),
     path('signin/', auth_views.signin, name='signin'),
     path('logout/', auth_views.signout, name='logout'),
+
+    path('monitoreo/<int:monitoreo_id>/transcribir_audio/', plantas_views.transcribir_audio_nota, name='transcribir_audio_nota')
 ]
