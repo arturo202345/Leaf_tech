@@ -1,130 +1,464 @@
 {% extends 'clasificador/encabezado.html' %}
 {% load static %}
 {% block content %}
-<title>Monitoreo de plantas</title>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Care Plant</title>
-    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Monitoreo de plantas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/Page.css' %}">
+        {% block extra_css %}{% endblock %}
+        <style>
 
+        </style>
+    </head>
+    <body>
 <div class="page-container">
 
-    <!-- Título principal -->
-    <div class="main-title">Monitoreo de plantas</div>
+    <!-- Notificación -->
+    <div id="notification" class="notification"></div>
 
-    <!-- Sección de parámetros de riego -->
+    <!-- Modal para agregar/actualizar ejemplar -->
+    <div id="modalAgregarPlanta" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">🌱 Guardar Planta</h2>
+                <span class="close">&times;</span>
+            </div>
+            
+            <form id="formAgregarPlanta">
+                <!-- Sección: Seleccionar ejemplar existente -->
+                <div id="seccionEjemplares" style="display: none;">
+                    <div class="info-box">
+                        💡 Ya tienes ejemplares de esta especie. Selecciona cuál actualizar o crea uno nuevo.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tus ejemplares actuales:</label>
+                        <div id="ejemplaresList" class="ejemplares-list"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="checkbox" id="crearNuevo" style="width: auto; margin-right: 8px;">
+                        <label for="crearNuevo" style="display: inline; font-weight: normal;">
+                            Crear nuevo ejemplar en lugar de actualizar
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Análisis de color actual -->
+                <div class="form-group">
+                    <label>Análisis de color actual</label>
+                    <div class="color-preview">
+                        <div class="color-preview-item">
+                            <span>🟢 Verde:</span>
+                            <strong id="previewVerde">0%</strong>
+                        </div>
+                        <div class="color-preview-item">
+                            <span>🟡 Amarillo:</span>
+                            <strong id="previewAmarillo">0%</strong>
+                        </div>
+                        <div class="color-preview-item">
+                            <span>🟤 Marrón:</span>
+                            <strong id="previewMarron">0%</strong>
+                        </div>
+                        <div class="color-preview-item">
+                            <span>🔴 Rojo:</span>
+                            <strong id="previewRojo">0%</strong>
+                        </div>
+                    </div>
+                    <div id="previewEstado" style="padding: 10px; background: #f0f0f0; border-radius: 5px; text-align: center; font-weight: 600;">
+                    </div>
+                </div>
+
+                <input type="hidden" id="plantaIdActualizar" name="planta_id">
+
+                <button type="submit" class="btn-submit" id="btnSubmit">
+                    💾 Guardar Planta
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Título principal -->
+    <div class="main-title">Monitoreo de Plantas</div>
+
+    <!-- Sección de monitoreo -->
     <section class="riego-container">
         <div class="plant-image">
             <!-- Video stream -->
             <img id="videoStream" 
-         src="{% url 'video_feed' %}" 
-         alt="No camera" 
-         data-placeholder="https://png.pngtree.com/png-vector/20221116/ourmid/pngtree-no-camera-red-sign-png-image_6459860.png">
+                 src="{% url 'video_feed' %}" 
+                 alt="No camera" 
+                 data-placeholder="https://png.pngtree.com/png-vector/20221116/ourmid/pngtree-no-camera-red-sign-png-image_6459860.png">
 
-            <!-- 🔘 Botón para controlar la cámara -->
+            <!-- Botón para controlar la cámara -->
             <button id="toggleCameraBtn" class="toggle-btn">Apagar cámara</button>
         </div>
         
         <div class="riego-info">
-            <div class="plant-name"></div>
-            <div class="section-title">Parámetros de Cuidados</div>
+            <!-- Nombre de la planta -->
+            <div class="plant-name">Detectando...</div>
             
-            <div class="params-grid">
-                <div class="param-row">
-                    <div class="param-label">Temperatura</div>
-                    <div class="param-box"></div>
-                    <div class="icon-btn"></div>
+            <!-- Información taxonómica -->
+            <div class="taxonomy-grid">
+                <div class="taxonomy-card label">Nombre científico</div>
+                <div class="taxonomy-card value" id="nombre-cientifico">-</div>
+
+                <div class="taxonomy-card label">Familia</div>
+                <div class="taxonomy-card value" id="familia">-</div>
+            </div>
+
+            <!-- Botón principal de guardar -->
+            <button id="guardarPlanta" class="btn-guardar">
+                💾 Guardar en Mi Colección
+            </button>
+
+            <!-- Análisis de Color -->
+            <div class="section-title">Análisis de Salud</div>
+            <div class="color-analysis">
+                <div class="color-row">
+                    <div class="color-indicator verde"></div>
+                    <span class="color-name">Verde</span>
+                    <span id="color-verde" class="color-percentage">0%</span>
                 </div>
-                
-                <div class="param-row">
-                    <div class="param-label">humedad del suelo</div>
-                    <div class="param-box"></div>
-                    <div class="icon-btn"></div>
+                <div class="color-row">
+                    <div class="color-indicator amarillo"></div>
+                    <span class="color-name">Amarillo</span>
+                    <span id="color-amarillo" class="color-percentage">0%</span>
                 </div>
-                
-                <div class="param-row">
-                    <div class="param-label">Ph del suelo</div>
-                    <div class="param-box"></div>
-                    <div class="icon-btn"></div>
+                <div class="color-row">
+                    <div class="color-indicator marron"></div>
+                    <span class="color-name">Marrón</span>
+                    <span id="color-marron" class="color-percentage">0%</span>
                 </div>
+                <div class="color-row">
+                    <div class="color-indicator rojo"></div>
+                    <span class="color-name">Rojo</span>
+                    <span id="color-rojo" class="color-percentage">0%</span>
+                </div>
+            </div>
+            
+            <!-- Estado de la planta -->
+            <div id="estado-color" class="estado-badge">
+                Analizando...
             </div>
         </div>
     </section>
 
     <!-- Sección de información de la especie -->
     <section class="species-container">
-        <div class="species-title">Un poco sobre la especie</div>
+        <div class="species-title">Información de la Especie</div>
 
         <div class="species-image">
-            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop" alt="Epipremnum aureum">
+            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop" alt="Planta">
         </div>
         
         <div class="species-info">
-            <div class="species-name">Epipremnum aureum</div>
+            <div class="species-name">Detectando...</div>
             <div class="species-text">
-                Epipremnum aureum, comúnmente conocido como potus, pothos o poto, es una especie de la familia Araceae nativa del sudeste asiático y Nueva Guinea. En ocasiones es confundida con philodendron.
+                La información aparecerá cuando se detecte una planta.
             </div>
             <div class="species-reference">
-                Información basada en: <a href="https://es.wikipedia.org/wiki/Epipremnum_aureum" target="_blank">Wikipedia</a>
+                Fuente: <a href="https://es.wikipedia.org/wiki/Planta" target="_blank">Ver más información</a>
             </div>
         </div>
     </section>
 
-    <!-- Script para actualizar nombre -->
+    <!-- CSRF Token para Django -->
+    {% csrf_token %}
+
+    <!-- Scripts -->
     <script>
-        function updatePlantInfo() {
-    fetch("{% url 'get_plant_data' %}")
-    .then(response => response.json())
-    .then(data => {
-        // 🌿 Nombre de la planta
-        const plantNameDiv = document.querySelector('.plant-name');
-        if (data.label) {
-            plantNameDiv.textContent = `${data.label} (${(data.prob * 100).toFixed(1)}%)`;
-        } else {
-            plantNameDiv.textContent = "Detectando...";
+        let currentPlantData = null;
+        let misEjemplares = [];
+        let ejemplarSeleccionado = null;
+        const modal = document.getElementById('modalAgregarPlanta');
+        const closeBtn = document.querySelector('.close');
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
         }
 
-        // 🌡️ Parámetros
-        document.querySelectorAll('.param-row')[0].querySelector('.param-box').textContent = data.temperatura;
-        document.querySelectorAll('.param-row')[1].querySelector('.param-box').textContent = data.humedad;
-        document.querySelectorAll('.param-row')[2].querySelector('.param-box').textContent = data.estado;
+        function updatePlantInfo() {
+            fetch("{% url 'get_plant_data' %}")
+            .then(response => response.json())
+            .then(data => {
+                currentPlantData = data;
 
-        // 🪴 Información de la especie
-        document.querySelector('.species-name').textContent = data.label;
-        document.querySelector('.species-text').textContent = data.descripcion;
-        document.querySelector('.species-image img').src = data.imagen;
-        document.querySelector('.species-reference a').href = data.referencia;
-        document.querySelector('.species-reference a').textContent = data.referencia;
-    })
-    .catch(error => console.error('Error al obtener los datos de la planta:', error));
-    }
+                // 🌿 Nombre de la planta
+                const plantNameDiv = document.querySelector('.plant-name');
+                const btnGuardar = document.getElementById('guardarPlanta');
 
-// Actualiza cada 2 segundos
-    setInterval(updatePlantInfo, 2000);
+                // Verificar si es una planta válida (no "Detectando...", "Desconocido" o "no_planta")
+                const esPlantaValida = data.label && 
+                                       data.label !== "Detectando..." && 
+                                       data.label !== "Desconocido" &&
+                                       data.label !== "no_planta";
+
+                if (esPlantaValida) {
+                    plantNameDiv.textContent = `${data.label} (${(data.prob * 100).toFixed(1)}%)`;
+                    btnGuardar.style.display = 'block';
+                } else {
+                    // Si es "no_planta" o detectando, mostrar el label tal cual
+                    plantNameDiv.textContent = data.label || "Detectando...";
+                    btnGuardar.style.display = 'none';
+                }
+
+                // 🔬 Información taxonómica
+                const nombreCientifico = document.getElementById('nombre-cientifico');
+                const familia = document.getElementById('familia');
+                
+                if (data.nombre_cientifico && data.nombre_cientifico !== '-' && data.nombre_cientifico !== '') {
+                    nombreCientifico.textContent = data.nombre_cientifico;
+                    nombreCientifico.style.fontStyle = 'italic';
+                } else {
+                    nombreCientifico.textContent = '-';
+                    nombreCientifico.style.fontStyle = 'normal';
+                }
+                
+                if (data.familia && data.familia !== '-' && data.familia !== '') {
+                    familia.textContent = data.familia;
+                } else {
+                    familia.textContent = '-';
+                }
+
+                // 🎨 Análisis de color
+                if (data.porcentaje_verde !== undefined) {
+                    document.getElementById('color-verde').textContent = data.porcentaje_verde.toFixed(1) + '%';
+                    document.getElementById('color-amarillo').textContent = data.porcentaje_amarillo.toFixed(1) + '%';
+                    document.getElementById('color-marron').textContent = data.porcentaje_marron.toFixed(1) + '%';
+                    document.getElementById('color-rojo').textContent = data.porcentaje_rojo.toFixed(1) + '%';
+                    
+                    const estadoDiv = document.getElementById('estado-color');
+                    estadoDiv.textContent = data.descripcion_estado || 'Analizando...';
+                    estadoDiv.className = data.estado === 1 ? 'estado-badge saludable' : 'estado-badge atencion';
+                }
+
+                // 🪴 Información de la especie
+                const speciesName = document.querySelector('.species-name');
+                const speciesText = document.querySelector('.species-text');
+                const speciesImg = document.querySelector('.species-image img');
+                const refLink = document.querySelector('.species-reference a');
+
+                if (esPlantaValida) {
+                    // Es una planta válida, mostrar su información
+                    speciesName.textContent = data.label;
+                    speciesText.textContent = data.descripcion || 'No hay descripción disponible para esta especie.';
+                    
+                    if (data.imagen) {
+                        speciesImg.src = data.imagen;
+                        speciesImg.alt = data.label;
+                    }
+                    
+                    if (data.referencia) {
+                        refLink.href = data.referencia;
+                        refLink.textContent = 'Ver más información';
+                    }
+                } else if (data.label === "no_planta") {
+                    // Es "no_planta", mostrar mensaje especial
+                    speciesName.textContent = "no_planta";
+                    speciesText.textContent = data.descripcion || "Especie detectada pero no está en el catálogo.";
+                    
+                    // Mantener imagen por defecto
+                    speciesImg.src = "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop";
+                    speciesImg.alt = "Planta";
+                    
+                    refLink.href = "https://es.wikipedia.org/wiki/Planta";
+                    refLink.textContent = "Ver más información";
+                } else {
+                    // Estado de detección (Detectando... o Desconocido)
+                    speciesName.textContent = "Detectando...";
+                    speciesText.textContent = "La información aparecerá cuando se detecte una planta.";
+                    
+                    // Imagen por defecto
+                    speciesImg.src = "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=280&h=320&fit=crop";
+                    speciesImg.alt = "Planta";
+                    
+                    refLink.href = "https://es.wikipedia.org/wiki/Planta";
+                    refLink.textContent = "Ver más información";
+                }
+
+                // Guardar ejemplares del usuario (si los tiene)
+                if (data.mis_ejemplares) {
+                    misEjemplares = data.mis_ejemplares;
+                }
+            })
+            .catch(error => console.error('Error al obtener los datos de la planta:', error));
+        }
+
+        // Abrir modal al hacer clic en guardar
+        document.getElementById('guardarPlanta').addEventListener('click', async function() {
+            if (!currentPlantData) {
+                showNotification('No hay datos de planta para guardar', 'error');
+                return;
+            }
+
+            // Pre-llenar datos de color
+            document.getElementById('previewVerde').textContent = currentPlantData.porcentaje_verde.toFixed(1) + '%';
+            document.getElementById('previewAmarillo').textContent = currentPlantData.porcentaje_amarillo.toFixed(1) + '%';
+            document.getElementById('previewMarron').textContent = currentPlantData.porcentaje_marron.toFixed(1) + '%';
+            document.getElementById('previewRojo').textContent = currentPlantData.porcentaje_rojo.toFixed(1) + '%';
+            document.getElementById('previewEstado').textContent = currentPlantData.descripcion_estado || 'Estado desconocido';
+
+            // Verificar si el usuario ya tiene ejemplares de esta especie
+            if (currentPlantData.tiene_ejemplares && misEjemplares.length > 0) {
+                // Mostrar sección de ejemplares
+                document.getElementById('seccionEjemplares').style.display = 'block';
+                document.getElementById('modalTitle').textContent = '🌱 Actualizar o Crear Ejemplar';
+                
+                // Listar ejemplares
+                const listaHTML = misEjemplares.map(e => `
+                    <div class="ejemplar-item" data-id="${e.id}">
+                        <strong>${currentPlantData.label} #${e.id}</strong>
+                        <br><small style="color: #888;">Estado: ${e.estado === 1 ? 'Saludable' : 'Necesita atención'}</small>
+                    </div>
+                `).join('');
+                
+                document.getElementById('ejemplaresList').innerHTML = listaHTML;
+                
+                // Agregar event listeners a los ejemplares
+                document.querySelectorAll('.ejemplar-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        document.querySelectorAll('.ejemplar-item').forEach(i => i.classList.remove('selected'));
+                        this.classList.add('selected');
+                        ejemplarSeleccionado = this.dataset.id;
+                        document.getElementById('plantaIdActualizar').value = ejemplarSeleccionado;
+                        document.getElementById('btnSubmit').textContent = '🔄 Actualizar Monitoreo';
+                    });
+                });
+                
+            } else {
+                // No tiene ejemplares, crear nuevo directamente
+                document.getElementById('seccionEjemplares').style.display = 'none';
+                document.getElementById('modalTitle').textContent = '🌱 Guardar Nueva Planta';
+                document.getElementById('btnSubmit').textContent = '💾 Guardar Planta';
+            }
+            
+            modal.style.display = 'block';
+        });
+
+        // Checkbox "Crear nuevo"
+        document.getElementById('crearNuevo').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('plantaIdActualizar').value = '';
+                ejemplarSeleccionado = null;
+                document.querySelectorAll('.ejemplar-item').forEach(i => i.classList.remove('selected'));
+                document.getElementById('btnSubmit').textContent = '💾 Crear Nuevo Ejemplar';
+            } else {
+                document.getElementById('btnSubmit').textContent = '🔄 Actualizar Monitoreo';
+            }
+        });
+
+        // Cerrar modal
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+            document.getElementById('formAgregarPlanta').reset();
+            ejemplarSeleccionado = null;
+            document.getElementById('plantaIdActualizar').value = '';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                document.getElementById('formAgregarPlanta').reset();
+            }
+        }
+
+        // Enviar formulario
+        document.getElementById('formAgregarPlanta').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btn = this.querySelector('.btn-submit');
+            btn.disabled = true;
+            const textoOriginal = btn.textContent;
+            btn.textContent = '⏳ Guardando...';
+            
+            const formData = new FormData();
+            formData.append('nombre', currentPlantData.label);
+            formData.append('nombre_cientifico', currentPlantData.nombre_cientifico || '');
+            formData.append('familia', currentPlantData.familia || '');
+            formData.append('descripcion', currentPlantData.descripcion || '');
+            formData.append('imagen_url', currentPlantData.imagen || '');
+            
+            // ID del ejemplar (para actualizar existente)
+            const plantaId = document.getElementById('plantaIdActualizar').value;
+            if (plantaId) {
+                formData.append('planta_id', plantaId);
+            }
+            
+            // Datos del monitoreo
+            formData.append('porcentaje_verde', currentPlantData.porcentaje_verde);
+            formData.append('porcentaje_amarillo', currentPlantData.porcentaje_amarillo);
+            formData.append('porcentaje_marron', currentPlantData.porcentaje_marron);
+            formData.append('porcentaje_rojo', currentPlantData.porcentaje_rojo);
+            formData.append('estado', currentPlantData.estado);
+            formData.append('descripcion_estado', currentPlantData.descripcion_estado);
+            
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            try {
+                const response = await fetch('{% url "guardar_planta_monitoreo" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    modal.style.display = 'none';
+                    this.reset();
+                    ejemplarSeleccionado = null;
+                    
+                    // Recargar ejemplares
+                    updatePlantInfo();
+                } else {
+                    showNotification('Error: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Error al guardar: ' + error, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = textoOriginal;
+            }
+        });
+
+        // Actualiza cada 2 segundos
+        setInterval(updatePlantInfo, 2000);
+        updatePlantInfo();
     </script>
 
     <!-- Script para encender/apagar cámara -->
-   <script>
-    const video = document.getElementById('videoStream');
-    const toggleBtn = document.getElementById('toggleCameraBtn');
-    let cameraOn = true; // La cámara empieza encendida
+    <script>
+        const video = document.getElementById('videoStream');
+        const toggleBtn = document.getElementById('toggleCameraBtn');
+        let cameraOn = true;
 
-    toggleBtn.addEventListener('click', () => {
-        if (cameraOn) {
-            // 🔴 Apagar cámara → mostrar imagen de "no cámara"
-            video.src = video.dataset.placeholder;
-            toggleBtn.textContent = "Encender cámara";
-            cameraOn = false;
-        } else {
-            // 🟢 Encender cámara → restaurar streaming
-            video.src = "{% url 'video_feed' %}";
-            toggleBtn.textContent = "Apagar cámara";
-            cameraOn = true;
-        }
-    });
-</script>
+        toggleBtn.addEventListener('click', () => {
+            if (cameraOn) {
+                video.src = video.dataset.placeholder;
+                toggleBtn.textContent = "Encender cámara";
+                toggleBtn.classList.add('off');
+                cameraOn = false;
+            } else {
+                video.src = "{% url 'video_feed' %}";
+                toggleBtn.textContent = "Apagar cámara";
+                toggleBtn.classList.remove('off');
+                cameraOn = true;
+            }
+        });
+    </script>
 
 </div>
+</body>
 {% endblock content %}

@@ -1,0 +1,62 @@
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/signin.css' %}">
+<!-- Incluye Font Awesome para los íconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<div class="register-container">
+    <div class="register-card">
+        <div class="logo-container">
+            <div class="leaf-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+                </svg>
+            </div>
+            <h2 class="register-title">Crear Cuenta</h2>
+            <p class="register-subtitle">Únete al sistema</p>
+        </div>
+        
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form action="/signup/" method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" required>
+                <div class="form-hint">150 caracteres o menos. Solo letras, números y @/./+/-/_</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password1">Contraseña</label>
+                <input type="password" id="password1" name="password1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password2">Confirmar Contraseña</label>
+                <input type="password" id="password2" name="password2" required>
+            </div>
+            
+            <button type="submit" class="btn-register">Registrarse</button>
+            
+            <div class="login-link">
+                ¿Ya tienes cuenta? <a href="{% url 'signin' %}">Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Ocultar el header original si existe
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('header');
+        if (header) {
+            header.style.display = 'none';
+        }
+    });
+</script>
+
+{% endblock %}

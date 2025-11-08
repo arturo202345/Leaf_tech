@@ -1,0 +1,44 @@
+{% extends "clasificador/encabezado.html" %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/planta.css' %}">
+    <link rel="stylesheet" href="{% static 'css/eliminar.css' %}">
+
+<div class="confirmar-eliminar-container">
+    <div class="confirmar-card">
+        <div class="confirmar-icon">⚠️</div>
+        <h1>¿Eliminar esta planta?</h1>
+        <p class="planta-nombre">{{ planta.nombre }}</p>
+        
+        <div class="planta-preview">
+            <div class="preview-image">
+                {% if planta.ImagenURL %}
+                    <img src="{{ planta.ImagenURL }}" alt="{{ planta.nombre }}">
+                {% else %}
+                    <img src="{% static 'images/placeholder-plant.jpg' %}" alt="{{ planta.nombre }}">
+                {% endif %}
+            </div>
+            <div class="preview-info">
+                <p>🌡️ Temperatura: {{ planta.Temperatura }}°C</p>
+                <p>💧 Humedad: {{ planta.Humedad }}%</p>
+                <p>⚗️ PH: {{ planta.PH }}</p>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <p>⚠️ Esta acción eliminará permanentemente la planta y todos sus datos asociados.</p>
+        </div>
+        
+        <p class="warning-message">Esta acción no se puede deshacer.</p>
+        
+        <div class="confirmar-actions">
+            <a href="{% url 'detalle_planta' planta.id %}" class="btn-cancelar">Cancelar</a>
+            <form method="POST" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-eliminar">Sí, eliminar planta</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

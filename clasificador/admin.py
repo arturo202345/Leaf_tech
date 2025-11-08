@@ -1,3 +1,8 @@
+# clasificador/admin.py
 from django.contrib import admin
-from .models import Planta# Register your models here.
-admin.site.register(Planta)
+from .models import EspeciePlanta, MiPlanta, MonitoreoPlanta
+
+# Register your models here.
+admin.site.register(EspeciePlanta)
+admin.site.register(MiPlanta)
+admin.site.register(MonitoreoPlanta)

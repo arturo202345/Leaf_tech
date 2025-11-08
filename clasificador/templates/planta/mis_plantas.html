@@ -1,0 +1,69 @@
+{% extends "clasificador/encabezado.html" %}
+
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/Page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/planta.css' %}">
+
+<div class="container">
+    <h1>
+        Mis Plantas
+        
+    </h1>
+    <input type="text" id="searchInput" class="search-bar" placeholder="Buscar plantas...">
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total de plantas</h3>
+            <div class="number">{{ total_plantas }}</div>
+        </div>
+        <div class="stat-card healthy">
+            <h3>Saludables</h3>
+            <div class="number">{{ plantas_saludables }}</div>
+        </div>
+        <div class="stat-card attention">
+            <h3>Requieren atención</h3>
+            <div class="number">{{ plantas_atencion }}</div>
+        </div>
+    </div>
+    <div class="plant-grid" id="plantGrid">
+        {% for planta in plantas %}
+        <div class="plant-card {% if planta.estado == 0 or planta.estado == 2 %}attention{% endif %}" data-name="{{ planta.especie.nombre|lower }} {{ planta.apodo|lower }}">
+            <h3>
+                {{ planta.especie.nombre }}
+                {% if planta.apodo %}<small>({{ planta.apodo }})</small>{% endif %}
+            </h3>
+            <div class="plant-image">
+                {% if planta.especie.imagen_url %}
+                    <img src="{{ planta.especie.imagen_url }}" alt="{{ planta.especie.nombre }}">
+                {% else %}
+                    <img src="{% static 'images/placeholder-plant.jpg' %}" alt="{{ planta.especie.nombre }}">
+                {% endif %}
+            </div>
+            <div class="plant-info">
+                {% if planta.ubicacion %}
+                    <p><strong>📍 Ubicación:</strong> {{ planta.ubicacion }}</p>
+                {% endif %}
+                <p><strong>🟢 Verde:</strong> {{ planta.porcentaje_verde|floatformat:1 }}%</p>
+                <p><strong>🟡 Amarillo:</strong> {{ planta.porcentaje_amarillo|floatformat:1 }}%</p>
+                <p><strong>🟤 Marrón:</strong> {{ planta.porcentaje_marron|floatformat:1 }}%</p>
+            </div>
+            <div class="plant-status">
+                Estado: {{ planta.get_estado_display }}
+            </div>
+            <div class="plant-description" style="margin: 10px 0; font-size: 13px; color: #666;">
+                {{ planta.descripcion_estado|default:"Sin análisis reciente" }}
+            </div>
+            <div class="plant-actions">
+                <a href="{% url 'detalle_planta' planta.id %}" class="btn-view">Ver detalles</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-plants">No tienes plantas registradas aún. ¡Captura tu primera planta!</p>
+        {% endfor %}
+    </div>
+</div>
+    
+
+<script src="{% static 'Js/detalle.js' %}"></script>
+{% endblock content %}

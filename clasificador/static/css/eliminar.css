@@ -1,0 +1,149 @@
+.confirmar-eliminar-container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.confirmar-card {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.confirmar-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.confirmar-card h1 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.planta-nombre {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d5a2d;
+    margin-bottom: 25px;
+}
+
+.planta-preview {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: #f7fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.preview-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-info {
+    flex: 1;
+}
+
+.preview-info p {
+    margin: 8px 0;
+    color: #4a5568;
+    font-size: 15px;
+}
+
+.warning-box {
+    background-color: #fff5f5;
+    border: 2px solid #feb2b2;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.warning-box p {
+    color: #c53030;
+    margin: 0;
+    font-weight: 600;
+}
+
+.warning-message {
+    color: #e53e3e;
+    font-weight: 700;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.confirmar-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-cancelar, .btn-eliminar {
+    padding: 14px 35px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-cancelar {
+    background-color: #e2e8f0;
+    color: #4a5568;
+}
+
+.btn-cancelar:hover {
+    background-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+.btn-eliminar {
+    background-color: #f56565;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: #e53e3e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+}
+
+@media (max-width: 600px) {
+    .confirmar-card {
+        padding: 25px;
+    }
+
+    .planta-preview {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .confirmar-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancelar, .btn-eliminar {
+        width: 100%;
+    }
+}

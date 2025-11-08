@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('clasificador.urls')),  # Redirige las rutas base a la app clasificador
+
 ]

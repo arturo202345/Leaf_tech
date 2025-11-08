@@ -1,0 +1,319 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Usuario - LeafTech</title>
+    <link rel="stylesheet" href="{% static 'css/manual.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span>🌿</span>
+                Manual de Usuario LeafTech
+            </h1>
+            <p>Guía completa para el uso del sistema de monitoreo de plantas</p>
+            
+            <div class="actions">
+                <a href="{% url 'index' %}" class="btn btn-back">
+                    ← Volver al Inicio
+                </a>
+                <button onclick="descargarPDF()" class="btn btn-download">
+                    📥 Descargar PDF
+                </button>
+                <button onclick="window.print()" class="btn btn-print">
+                    🖨️ Imprimir
+                </button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Tabla de Contenidos -->
+            <div class="toc">
+                <h2>📋 Tabla de Contenidos</h2>
+                <ul>
+                    <li><a href="#introduccion">1. Introducción</a></li>
+                    <li><a href="#inicio">2. Primeros Pasos</a></li>
+                    <li><a href="#monitoreo">3. Monitoreo de Plantas</a></li>
+                    <li><a href="#gestion">4. Gestión de Colección</a></li>
+                    <li><a href="#analisis">5. Análisis de Salud</a></li>
+                    <li><a href="#tips">6. Consejos y Buenas Prácticas</a></li>
+                    <li><a href="#faq">7. Preguntas Frecuentes</a></li>
+                </ul>
+            </div>
+
+            <!-- Sección 1: Introducción -->
+            <section id="introduccion" class="section">
+                <h2>1. Introducción</h2>
+                <p>
+                    <strong>LeafTech</strong> es un sistema inteligente de monitoreo de plantas que utiliza 
+                    visión por computadora y análisis de color para evaluar el estado de salud de tus plantas 
+                    en tiempo real.
+                </p>
+                
+                <h3>Características Principales</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🎥 Monitoreo en Tiempo Real</h4>
+                        <p>Detecta y clasifica especies de plantas usando tu cámara web</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎨 Análisis de Color</h4>
+                        <p>Evalúa la salud mediante análisis de porcentajes de verde, amarillo, marrón y rojo</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Historial Completo</h4>
+                        <p>Guarda y consulta el progreso de cada planta a lo largo del tiempo</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📝 Notas Personalizadas</h4>
+                        <p>Agrega observaciones y comentarios en cada monitoreo</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 2: Primeros Pasos -->
+            <section id="inicio" class="section">
+                <h2>2. Primeros Pasos</h2>
+                
+                <h3>2.1 Registro de Usuario</h3>
+                <ol>
+                    <li>Accede a la página principal de LeafTech</li>
+                    <li>Haz clic en "Registrarse"</li>
+                    <li>Completa el formulario con tus datos</li>
+                    <li>Confirma tu cuenta mediante el enlace enviado a tu correo</li>
+                </ol>
+
+                <div class="alert alert-info">
+                    <strong>💡 Nota:</strong> Tu información está protegida y solo tú podrás ver tus plantas.
+                </div>
+
+                <h3>2.2 Inicio de Sesión</h3>
+                <ol>
+                    <li>Ingresa tu nombre de usuario o correo electrónico</li>
+                    <li>Ingresa tu contraseña</li>
+                    <li>Haz clic en "Iniciar Sesión"</li>
+                </ol>
+            </section>
+
+            <!-- Sección 3: Monitoreo -->
+            <section id="monitoreo" class="section">
+                <h2>3. Monitoreo de Plantas</h2>
+                
+                <h3>3.1 Acceder al Monitoreo</h3>
+                <ol>
+                    <li>En el menú principal, selecciona <strong>"Monitoreo"</strong></li>
+                    <li>Permite el acceso a tu cámara web cuando el navegador lo solicite</li>
+                    <li>Coloca la planta frente a la cámara</li>
+                </ol>
+
+                <div class="alert alert-success">
+                    <strong>✅ Consejo:</strong> Asegúrate de tener buena iluminación natural para mejores resultados.
+                </div>
+
+                <h3>3.2 Detección Automática</h3>
+                <p>El sistema analizará automáticamente:</p>
+                <ul>
+                    <li><strong>Especie:</strong> Identificación de la planta (98% de precisión)</li>
+                    <li><strong>Estado de salud:</strong> Saludable, Enferma o Crítica</li>
+                    <li><strong>Análisis de color:</strong> Porcentajes de verde, amarillo, marrón y rojo</li>
+                </ul>
+
+                <h3>3.3 Guardar el Monitoreo</h3>
+                <p>Una vez detectada la planta, tienes dos opciones:</p>
+                <ol>
+                    <li><strong>Crear nuevo ejemplar:</strong> Si es la primera vez que registras esta especie</li>
+                    <li><strong>Actualizar existente:</strong> Si ya tienes un ejemplar de esta especie guardado</li>
+                </ol>
+
+                <div class="alert">
+                    <strong>⚠️ Importante:</strong> Si ya tienes un ejemplar de la misma especie, el sistema te 
+                    preguntará si deseas actualizarlo o crear uno nuevo.
+                </div>
+            </section>
+
+            <!-- Sección 4: Gestión -->
+            <section id="gestion" class="section">
+                <h2>4. Gestión de tu Colección</h2>
+                
+                <h3>4.1 Mis Plantas</h3>
+                <p>En la sección <strong>"Mis Plantas"</strong> encontrarás:</p>
+                <ul>
+                    <li>Lista de todas tus plantas guardadas</li>
+                    <li>Estado actual de cada una</li>
+                    <li>Estadísticas generales (total, saludables, con problemas)</li>
+                </ul>
+
+                <h3>4.2 Agregar desde Catálogo</h3>
+                <ol>
+                    <li>Haz clic en "Agregar desde Catálogo"</li>
+                    <li>Busca la especie en el selector</li>
+                    <li>Revisa la información de la especie</li>
+                    <li>Confirma para agregar a tu colección</li>
+                </ol>
+
+                <div class="alert alert-info">
+                    <strong>💡 Diferencia:</strong> Las plantas agregadas manualmente tendrán valores predeterminados. 
+                    Para análisis precisos, usa el monitoreo con cámara.
+                </div>
+
+                <h3>4.3 Ver Detalle de Planta</h3>
+                <p>Al hacer clic en una planta verás:</p>
+                <ul>
+                    <li>Información de la especie</li>
+                    <li>Estado actual de salud</li>
+                    <li>Historial de monitoreos (últimos 20 registros)</li>
+                    <li>Gráfico de evolución de colores</li>
+                </ul>
+
+                <h3>4.4 Agregar Notas</h3>
+                <ol>
+                    <li>En el detalle de la planta, localiza el monitoreo específico</li>
+                    <li>Haz clic en "Agregar nota" o el ícono de lápiz</li>
+                    <li>Escribe tus observaciones (máximo 500 caracteres)</li>
+                    <li>Guarda los cambios</li>
+                </ol>
+
+                <h3>4.5 Eliminar Plantas</h3>
+                <ol>
+                    <li>Accede al detalle de la planta</li>
+                    <li>Haz clic en "Eliminar planta"</li>
+                    <li>Confirma la acción</li>
+                </ol>
+
+                <div class="alert">
+                    <strong>⚠️ Advertencia:</strong> Esta acción eliminará todo el historial de monitoreos 
+                    asociado a la planta y no se puede deshacer.
+                </div>
+            </section>
+
+            <!-- Sección 5: Análisis -->
+            <section id="analisis" class="section">
+                <h2>5. Análisis de Salud</h2>
+                
+                <h3>5.1 Interpretación de Colores</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4 style="color: #4CAF50;">🟢 Verde</h4>
+                        <p>Indica tejido vegetal saludable. Valores altos (>70%) son ideales.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #FFC107;">🟡 Amarillo</h4>
+                        <p>Puede indicar estrés leve o falta de nutrientes. Atención si supera 20%.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #8B4513;">🟤 Marrón</h4>
+                        <p>Tejido seco o necrótico. Valores altos (>15%) requieren acción inmediata.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #F44336;">🔴 Rojo</h4>
+                        <p>Puede indicar enfermedad o daño severo. Cualquier valor requiere atención.</p>
+                    </div>
+                </div>
+
+                <h3>5.2 Estados de Salud</h3>
+                <ul>
+                    <li><strong>Saludable (Verde):</strong> La planta está en óptimas condiciones</li>
+                    <li><strong>Enferma (Amarillo):</strong> Presenta signos de estrés o problemas menores</li>
+                    <li><strong>Crítica (Rojo):</strong> Requiere atención urgente</li>
+                </ul>
+
+                <h3>5.3 Evolución Temporal</h3>
+                <p>
+                    El historial te permite identificar patrones y tendencias. Observa si los porcentajes 
+                    de colores mejoran o empeoran con el tiempo para ajustar tus cuidados.
+                </p>
+            </section>
+
+            <!-- Sección 6: Tips -->
+            <section id="tips" class="section">
+                <h2>6. Consejos y Buenas Prácticas</h2>
+                
+                <h3>6.1 Para Mejores Resultados en el Monitoreo</h3>
+                <ul>
+                    <li>✅ Usa luz natural o iluminación uniforme</li>
+                    <li>✅ Coloca la planta a 30-50 cm de la cámara</li>
+                    <li>✅ Evita sombras y reflejos</li>
+                    <li>✅ Enfoca hojas representativas del estado general</li>
+                    <li>✅ Mantén la cámara estable</li>
+                </ul>
+
+                <h3>6.2 Frecuencia de Monitoreo</h3>
+                <ul>
+                    <li><strong>Plantas saludables:</strong> 1 vez por semana</li>
+                    <li><strong>Plantas con problemas:</strong> 2-3 veces por semana</li>
+                    <li><strong>Tratamientos activos:</strong> Diariamente</li>
+                </ul>
+
+                <h3>6.3 Uso de Notas</h3>
+                <p>Registra información útil como:</p>
+                <ul>
+                    <li>Cambios en el riego o fertilización</li>
+                    <li>Condiciones ambientales (temperatura, humedad)</li>
+                    <li>Tratamientos aplicados</li>
+                    <li>Observaciones visuales adicionales</li>
+                </ul>
+            </section>
+
+            <!-- Sección 7: FAQ -->
+            <section id="faq" class="section">
+                <h2>7. Preguntas Frecuentes</h2>
+                
+                <h3>❓ ¿Puedo usar LeafTech sin cámara?</h3>
+                <p>
+                    Sí, puedes agregar plantas manualmente desde el catálogo, pero no obtendrás 
+                    análisis de color precisos. El monitoreo con cámara es necesario para evaluaciones 
+                    detalladas de salud.
+                </p>
+
+                <h3>❓ ¿Qué hago si mi planta no es reconocida?</h3>
+                <p>
+                    El sistema aprende constantemente. Si tu planta no es reconocida, puedes agregarla 
+                    manualmente y el equipo de LeafTech la incluirá en futuras actualizaciones del modelo.
+                </p>
+
+                <h3>❓ ¿Puedo tener varios ejemplares de la misma especie?</h3>
+                <p>
+                    Actualmente, el sistema permite un ejemplar por especie por usuario. Si necesitas 
+                    monitorear múltiples ejemplares, crea cuentas separadas o usa las notas para 
+                    diferenciarlos.
+                </p>
+
+                <h3>❓ ¿Los datos son privados?</h3>
+                <p>
+                    Sí, toda tu información es privada. Solo tú puedes ver tus plantas y su historial 
+                    de monitoreos.
+                </p>
+
+                <h3>❓ ¿Funciona en dispositivos móviles?</h3>
+                <p>
+                    Sí, LeafTech es totalmente responsive y funciona en smartphones y tablets con cámara.
+                </p>
+
+                <h3>❓ ¿Cómo puedo exportar mis datos?</h3>
+                <p>
+                    Actualmente puedes imprimir o descargar este manual. Próximamente se agregará 
+                    funcionalidad de exportación de datos de monitoreo en formato CSV o Excel.
+                </p>
+            </section>
+
+            <!-- Footer -->
+            <div style="text-align: center; padding: 40px 20px; color: #999; border-top: 2px solid #e0e0e0; margin-top: 50px;">
+                <p><strong>LeafTech</strong> - Sistema Inteligente de Monitoreo de Plantas</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;">
+                    Versión 1.0 | Última actualización: Noviembre 2025
+                </p>
+                <p style="margin-top: 20px;">
+                    <a href="{% url 'index' %}" style="color: #4CAF50; text-decoration: none; font-weight: 600;">
+                        ← Volver a la aplicación
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{% static 'Js/manual.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+{% extends "clasificador/encabezado.html" %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/detalle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+
+<div class="detalle-container">
+    <!-- Encabezado -->
+    <div class="detalle-header">
+        <a href="{% url 'mis_plantas' %}" class="btn-back">← Volver a Mi Colección</a>
+        <h1>{{ planta.especie.nombre }} #{{ planta.id }}</h1>
+        <div class="actions">
+            <button class="btn-delete" onclick="confirmarEliminar()">🗑️ Eliminar</button>
+        </div>
+    </div>
+
+    <!-- Información principal -->
+    <div class="info-grid">
+        <!-- Imagen y estado -->
+        <div class="card card-imagen">
+            <div class="planta-imagen-grande">
+                {% if planta.especie.imagen_url %}
+                    <img src="{{ planta.especie.imagen_url }}" alt="{{ planta.especie.nombre }}">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400&h=500&fit=crop" alt="{{ planta.especie.nombre }}">
+                {% endif %}
+            </div>
+            <div class="estado-badge {% if planta.estado == 1 %}saludable{% elif planta.estado == 0 %}atencion{% else %}critica{% endif %}">
+                <span class="estado-icono">
+                    {% if planta.estado == 1 %}✓{% elif planta.estado == 0 %}⚠{% else %}⚠️{% endif %}
+                </span>
+                <span>
+                    {% if planta.estado == 1 %}
+                        Saludable
+                    {% elif planta.estado == 0 %}
+                        Enferma
+                    {% else %}
+                        Crítica
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Análisis de color actual -->
+        <div class="card card-datos-actuales">
+            <h2>🎨 Análisis de Color Actual</h2>
+            
+            <div class="color-bars">
+                <div class="color-bar-item">
+                    <div class="color-bar-header">
+                        <span class="color-indicator verde"></span>
+                        <span class="color-label">Verde</span>
+                        <span class="color-value">{{ planta.porcentaje_verde|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill verde" style="width: {{ planta.porcentaje_verde }}%"></div>
+                    </div>
+                </div>
+
+                <div class="color-bar-item">
+                    <div class="color-bar-header">
+                        <span class="color-indicator amarillo"></span>
+                        <span class="color-label">Amarillo</span>
+                        <span class="color-value">{{ planta.porcentaje_amarillo|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill amarillo" style="width: {{ planta.porcentaje_amarillo }}%"></div>
+                    </div>
+                </div>
+
+                <div class="color-bar-item">
+                    <div class="color-bar-header">
+                        <span class="color-indicator marron"></span>
+                        <span class="color-label">Marrón</span>
+                        <span class="color-value">{{ planta.porcentaje_marron|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill marron" style="width: {{ planta.porcentaje_marron }}%"></div>
+                    </div>
+                </div>
+
+                <div class="color-bar-item">
+                    <div class="color-bar-header">
+                        <span class="color-indicator rojo"></span>
+                        <span class="color-label">Rojo</span>
+                        <span class="color-value">{{ planta.porcentaje_rojo|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill rojo" style="width: {{ planta.porcentaje_rojo }}%"></div>
+                    </div>
+                </div>
+            </div>
+
+            {% if planta.descripcion_estado %}
+            <div class="estado-descripcion">
+                <strong>Diagnóstico:</strong>
+                <p>{{ planta.descripcion_estado }}</p>
+            </div>
+            {% endif %}
+            
+            <p class="ultima-actualizacion">
+                📅 Última actualización: {{ planta.ultima_actualizacion|date:"d/m/Y H:i" }}
+            </p>
+        </div>
+
+        <!-- Información taxonómica -->
+        <div class="card card-taxonomia">
+            <h2>🔬 Información Taxonómica</h2>
+            
+            <div class="info-item">
+                <strong>Nombre común:</strong>
+                <p>{{ planta.especie.nombre }}</p>
+            </div>
+            
+            {% if planta.especie.nombre_cientifico %}
+            <div class="info-item">
+                <strong>Nombre científico:</strong>
+                <p><em>{{ planta.especie.nombre_cientifico }}</em></p>
+            </div>
+            {% endif %}
+            
+            {% if planta.especie.familia %}
+            <div class="info-item">
+                <strong>Familia:</strong>
+                <p>{{ planta.especie.familia }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="info-item">
+                <strong>Total de monitoreos:</strong>
+                <p>{{ total_monitoreos }}</p>
+            </div>
+
+            <div class="info-item">
+                <strong>Fecha de registro:</strong>
+                <p>{{ planta.fecha_agregada|date:"d/m/Y H:i" }}</p>
+            </div>
+        </div>
+
+        <!-- Información adicional de la especie -->
+        <div class="card card-info-adicional">
+            <h2>📖 Sobre esta Especie</h2>
+            
+            {% if planta.especie.descripcion %}
+            <div class="info-item">
+                <p>{{ planta.especie.descripcion }}</p>
+            </div>
+            {% else %}
+            <p class="no-datos">No hay descripción disponible para esta especie.</p>
+            {% endif %}
+            
+            {% if planta.especie.referencia_url %}
+            <div class="info-item">
+                <a href="{{ planta.especie.referencia_url }}" target="_blank" class="btn-referencia">
+                    🔗 Ver más información
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Historial de monitoreos -->
+    <div class="card card-historial">
+        <div class="historial-header">
+            <h2>📊 Historial de Monitoreos</h2>
+            <button class="btn-exportar" onclick="exportarDatos()">📥 Exportar datos</button>
+        </div>
+        
+        {% if monitoreos %}
+        <div class="tabla-container">
+            <table class="tabla-monitoreos">
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>🟢 Verde</th>
+                        <th>🟡 Amarillo</th>
+                        <th>🟤 Marrón</th>
+                        <th>🔴 Rojo</th>
+                        <th>Estado</th>
+                        <th>Diagnóstico</th>
+                        <th>Notas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for monitoreo in monitoreos %}
+                    <tr>
+                        <td>{{ monitoreo.fecha_monitoreo|date:"d/m/Y H:i" }}</td>
+                        <td>{{ monitoreo.porcentaje_verde|floatformat:1 }}%</td>
+                        <td>{{ monitoreo.porcentaje_amarillo|floatformat:1 }}%</td>
+                        <td>{{ monitoreo.porcentaje_marron|floatformat:1 }}%</td>
+                        <td>{{ monitoreo.porcentaje_rojo|floatformat:1 }}%</td>
+                        <td>
+                            <span class="badge-estado {% if monitoreo.estado == 1 %}badge-saludable{% elif monitoreo.estado == 0 %}badge-enferma{% else %}badge-critica{% endif %}">
+                                {% if monitoreo.estado == 1 %}
+                                    ✓ Saludable
+                                {% elif monitoreo.estado == 0 %}
+                                    ⚠ Enferma
+                                {% else %}
+                                    ⚠️ Crítica
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>{{ monitoreo.descripcion_estado|default:"-" }}</td>
+                        <td>
+                            <div class="notas-cell">
+                                {% if monitoreo.notas %}
+                                    <span class="nota-preview">{{ monitoreo.notas|truncatewords:10 }}</span>
+                                {% else %}
+                                    <span class="sin-notas">Sin notas</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn-nota" onclick="abrirModalNotas({{ monitoreo.id }}, '{{ monitoreo.notas|escapejs }}')">
+                                {% if monitoreo.notas %}
+                                    ✏️ Editar
+                                {% else %}
+                                    ➕ Agregar
+                                {% endif %}
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if total_monitoreos > 20 %}
+        <p class="nota-historial">Mostrando los últimos 20 monitoreos de {{ total_monitoreos }} totales</p>
+        {% endif %}
+        
+        {% else %}
+        <p class="no-datos">No hay monitoreos registrados para esta planta aún.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal para Notas -->
+<div id="modalNotas" class="modal">
+    <div class="modal-content modal-notas">
+        <div class="modal-header">
+            <h2>📝 <span id="modalTitulo">Agregar Nota</span></h2>
+            <span class="close" onclick="cerrarModalNotas()">&times;</span>
+        </div>
+        <form id="formNotas" method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="notasTexto">Escribe tus observaciones:</label>
+                <textarea 
+                    id="notasTexto" 
+                    name="notas" 
+                    rows="6" 
+                    placeholder="Ej: Observé hojas nuevas en la parte superior. Apliqué fertilizante líquido diluido. La planta está respondiendo bien al cambio de ubicación..."
+                    required
+                ></textarea>
+                <div class="contador-caracteres">
+                    <span id="contadorCaracteres">0</span> / 500 caracteres
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancelar" onclick="cerrarModalNotas()">Cancelar</button>
+                <button type="submit" class="btn-guardar">💾 Guardar Nota</button>
+            </div>
+        </form>
+    </div>
+</div>
+    
+
+<script src="{% static 'Js/detalle.js' %}"></script>
+
+{% endblock content %}

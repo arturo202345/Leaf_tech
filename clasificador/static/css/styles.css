@@ -9,77 +9,6 @@ body {
     background-color: #ffffff;
 }
 
-/* Header */
-header {
-    display: flex;
-    align-items: center;
-    background-color: #85D670;
-    padding: 0;
-    height: 100px;
-}
-
-.logo-box {
-    width: 160px;
-    height: 100px;
-    background-color: #5BAB38;
-    display: flex;
-
-}
-
-nav {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    gap: 40px;
-    margin-left: 50px;
-    justify-content: flex-end;
-}
-
-nav a {
-    color: #000000;
-    text-decoration: none;
-    font-size: 30px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    transition: color 0.3s ease;
-    margin-left: 26px;
-}
-
-nav a:hover {
-    color: #ffffff;
-}
-
-.search-icon {
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 50px;
-     background-color: #040000;
-}
-
-.start-button {
-    background-color: #AEFF94;
-    color: #1a1a1a;
-    padding: 16px 28px;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 24px;
-    letter-spacing: 0.5px;
-    margin-left: 40px;
-    margin-right: 40px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.start-button:hover {
-    background-color: #c6f1b8;
-}
 
 /* Hero Section */
 .hero {
@@ -138,7 +67,7 @@ nav a:hover {
 
 /* Objetivos Section */
 .objetivos-section {
-    background-color: white;
+
     padding: 80px 0;
     margin-top: 100px;
 }
@@ -151,7 +80,6 @@ nav a:hover {
 }
 
 .objetivos-title {
-    background-color: white;
     padding: 60px 50px;
     font-size: 50px;
     font-weight: 300;
