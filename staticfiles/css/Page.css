@@ -1,0 +1,721 @@
+/* Reset y body */
+.page-container * {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #000000 0%, #0b2b00 100%) !important;
+    min-height: 100vh;
+    font-family: 'Lato', 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* Contenedor principal */
+.page-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+/* Título principal */
+.main-title {
+    text-align: center;
+    color: white !important;
+    font-size: 48px;
+    font-weight: 700;
+    padding: 50px 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+/* Sección de monitoreo */
+.riego-container {
+    background: rgba(61, 151, 63, 0.58);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    max-width: 1250px;
+    margin: 0 auto 50px;
+    padding: 50px;
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.plant-image {
+    width: 560px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.plant-image img {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 16px;
+    background-color: #1a1a1a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.riego-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Nombre de la planta */
+.plant-name {
+    color: #1a202c !important;
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Información taxonómica */
+.taxonomy-info {
+    background: rgba(16, 68, 54, 0.61);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-left: 4px solid #21ff00;
+}
+
+.taxonomy-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.taxonomy-label {
+    color: #000000 !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 150px;
+}
+
+.taxonomy-value {
+    color: #1a202c !important;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.taxonomy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.taxonomy-card {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.taxonomy-card.label {
+    background-color: #aaffaa;
+    color: #000;
+}
+
+.taxonomy-card.value {
+    background-color: white;
+    color: #000;
+}
+
+.section-title {
+    color: #1a202c !important;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Análisis de color */
+.color-analysis {
+    background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.color-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.color-row:last-child {
+    margin-bottom: 0;
+}
+
+.color-row:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.color-indicator {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.color-indicator.verde {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.color-indicator.amarillo {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+}
+
+.color-indicator.marron {
+    background: linear-gradient(135deg, #92400e 0%, #78350f 100%) !important;
+}
+
+.color-indicator.rojo {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.color-name {
+    flex: 1;
+    color: #374151 !important;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.color-percentage {
+    font-weight: 700;
+    font-size: 18px;
+    color: #1a202c !important;
+    min-width: 60px;
+    text-align: right;
+}
+
+.color-preview {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.color-preview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estado de la planta */
+.estado-badge {
+    padding: 16px 24px;
+    border-radius: 16px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.estado-badge.saludable {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white !important;
+}
+
+.estado-badge.atencion {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+/* Botones */
+.toggle-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #39ffbf 0%, #059669 100%) !important;
+    color: white !important;
+    border: none;
+    padding: 18px 30px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(16, 185, 129, 0.4);
+}
+
+.toggle-btn.off {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+    box-shadow: 0 8px 20px rgba(107, 114, 128, 0.3);
+}
+
+.btn-guardar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: none;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-guardar:active {
+    transform: translateY(0);
+}
+
+.btn-guardar.guardada {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+}
+
+.btn-agregar-manual {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: none;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+}
+
+.btn-agregar-manual:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+}
+
+.btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-submit:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Notificaciones */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    border-left: 4px solid #4CAF50;
+}
+
+.notification.error {
+    border-left: 4px solid #f44336;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    animation: slideDown 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Formularios */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+    font-size: 12px;
+}
+
+/* Listas */
+.ejemplares-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.ejemplar-item {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.ejemplar-item:hover {
+    background: #f8f9fa;
+}
+
+.ejemplar-item:last-child {
+    border-bottom: none;
+}
+
+.ejemplar-item.selected {
+    background: #e7f3ff;
+    border-left: 4px solid #667eea;
+}
+
+/* Info box */
+.info-box {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #856404;
+}
+
+/* Sección de especies */
+.species-container {
+    background: rgba(61, 151, 63, 0.58);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    max-width: 1350px;
+    margin: 0 auto 50px;
+    padding: 50px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.species-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff !important;
+    text-align: center;
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+.species-image {
+    width: 400px;
+    height: 400px;
+    flex-shrink: 0;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.species-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.species-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+    justify-content: center;
+}
+
+.species-name {
+    color: #ffffff !important;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.species-text {
+    color: #000000 !important;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.8;
+    text-align: justify;
+    flex: 1;
+    padding: 0 20px;
+}
+
+.species-reference {
+    color: #6b7280 !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid #e5e7eb;
+}
+
+.species-reference a {
+    color: #667eea !important;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.species-reference a:hover {
+    color: #764ba2 !important;
+    text-decoration: underline;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .riego-container {
+        flex-direction: column;
+        padding: 40px;
+        gap: 40px;
+    }
+
+    .plant-image {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .species-container {
+        grid-template-columns: 1fr;
+        padding: 40px;
+    }
+
+    .species-image {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .species-info {
+        grid-column: 1;
+        grid-row: 3;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 32px;
+        padding: 30px 20px;
+    }
+
+    .riego-container,
+    .species-container {
+        margin: 0 20px 40px;
+        padding: 30px 20px;
+        border-radius: 16px;
+    }
+
+    .plant-name {
+        font-size: 28px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .taxonomy-label {
+        min-width: 120px;
+        font-size: 12px;
+    }
+
+    .taxonomy-value {
+        font-size: 14px;
+    }
+
+    .color-indicator {
+        width: 24px;
+        height: 24px;
+    }
+
+    .color-name {
+        font-size: 14px;
+    }
+
+    .color-percentage {
+        font-size: 16px;
+    }
+
+    .species-image {
+        height: 300px;
+    }
+
+    .species-name {
+        font-size: 24px;
+    }
+
+    .species-text {
+        font-size: 15px;
+    }
+}

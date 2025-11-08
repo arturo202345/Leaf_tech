@@ -1,0 +1,105 @@
+
+/* Estilos del grid de consejos */
+.consejos-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.consejo-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+}
+
+.consejo-item h3 {
+    margin: 0 0 8px 0;
+    color: #2d3748;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.consejo-item h3 svg {
+    flex-shrink: 0;
+}
+
+.consejo-item p {
+    margin: 0;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+/* Badges de dificultad y toxicidad */
+.consejo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.badge-fácil {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-moderada {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-difícil {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Header del modal de consejos */
+.consejos-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.consejos-header h3 {
+    margin: 0 0 5px 0;
+    color: #1f2937;
+}
+
+.consejos-header p {
+    margin: 0;
+    font-style: italic;
+    color: #6b7280;
+}
+
+/* Estado sin consejos */
+.no-consejos {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+.no-consejos-icon {
+    margin-bottom: 15px;
+}
+
+.no-consejos-icon svg {
+    width: 64px;
+    height: 64px;
+    stroke: #9ca3af;
+}
+
+.no-consejos h3 {
+    margin: 10px 0;
+    color: #374151;
+}
+
+.no-consejos p {
+    margin: 5px 0;
+    font-size: 14px;
+}
